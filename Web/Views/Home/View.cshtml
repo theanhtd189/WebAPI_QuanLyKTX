@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Web.Models.HOCSINH>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@(ViewBag.Title != null? ViewBag.Title : "Ứng dụng quản lý KTX")</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PHONG.tenphong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.hoten)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ngaysinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.quequan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.gioitinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ttphuhuynh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.lop)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PHONG.tenphong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.hoten)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ngaysinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.quequan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gioitinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ttphuhuynh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lop)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.mahs }) |
+                @Html.ActionLink("Details", "Details", new { id=item.mahs }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.mahs })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

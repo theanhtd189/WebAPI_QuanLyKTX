@@ -1,0 +1,58 @@
+﻿table th, table tr {
+    text-align:center;
+}
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+.nav-link, .nav-link:hover {
+    color: whitesmoke;
+    background-color: #3a3a3a;
+}
+
+.link-dark {
+    color: #92b4d6;
+}
+
+.btn-toggle-nav a:hover {
+    color: #202926;
+    transition: .5s;
+    text-shadow: 0 0 2px #3a181e;
+}
+
+.mn-li.active {
+    background-color: blue;
+}
+.container {
+    transition: .7s;
+    overflow:auto;
+    -webkit-animation: fade-in 1.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    animation: fade-in 1.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+.lb-page {
+    transition: .5s;
+}
+.container table {
+    box-shadow: 0px 0px 10px black;
+}
+.pagination {
+    box-shadow: 0px 10px 1px white;
+}
+* {
+    outline:0;
+}
+.add-new {
+    transition: .5s;
+    -webkit-animation: bounce-top 0.9s both;
+    animation: bounce-top 0.9s both;
+}

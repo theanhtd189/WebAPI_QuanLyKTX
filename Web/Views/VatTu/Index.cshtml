@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Web.Models.VATTU>
+
+@{
+    ViewBag.Title = "Danh sách vật tư";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    int Stt = ViewBag.I;
+
+}
+
+<h2 class="display-6 text-capitalize lb-page">Danh sách các vật tư hiện có </h2>
+<a class="btn mb-2 btn-outline-primary add-new" href="#">Nhập kho</a>
+<table class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">
+                Tên vật tư
+            </th>
+            <th scope="col">
+                Tổng số lượng
+            </th>
+            <th scope="col">
+                Đơn giá
+            </th>
+            <th scope="col">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(Stt++)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tenvattu)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.soluong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.giatien) VND
+                </td>
+                <td>
+                    <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-calendar-week"></i> Chi tiết</a>
+                    <i class="fa-brands fa-squarespace fs-5"></i>
+                    <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
+                    <i class="fa-brands fa-squarespace fs-5"></i>
+                    <a href="" e-type="delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

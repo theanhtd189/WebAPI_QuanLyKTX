@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Web.Models.HOADON>
+@{
+    ViewBag.Title = "Danh sách hóa đơn";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    var Stt = ViewBag.I;
+}
+
+<h2 class="display-6 text-capitalize lb-page">Danh sách hóa đơn </h2>
+<a class="btn mb-2 btn-outline-primary add-new" href="#">Tạo hóa đơn mới</a>
+<table class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">
+                Mã hóa đơn
+            </th>
+            <th scope="col">
+                Phòng
+            </th>
+            <th scope="col">
+                Ngày tạo
+            </th>
+            <th scope="col">
+                Tổng tiền
+            </th>
+            <th scope="col">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @(Stt++)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mahd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PHONG.tenphong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ngaytao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tongtien)
+            </td>
+            <td>
+                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-calendar-week"></i> Chi tiết</a>
+                <i class="fa-brands fa-squarespace fs-5"></i>
+                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
+                <i class="fa-brands fa-squarespace fs-5"></i>
+                <a href="" e-type="delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+

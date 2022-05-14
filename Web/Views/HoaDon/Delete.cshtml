@@ -1,0 +1,89 @@
+﻿@model Web.Models.HOADON
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>HOADON</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PHONG1.tenphong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PHONG1.tenphong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ngayhoadon)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ngayhoadon)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tiendiennuoc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tiendiennuoc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tongtien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tongtien)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tienphong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tienphong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tenhs)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tenhs)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tennv)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tennv)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.maphieudiennuoc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.maphieudiennuoc)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

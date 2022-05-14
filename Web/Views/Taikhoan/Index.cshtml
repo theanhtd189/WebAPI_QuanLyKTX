@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Web.Models.TAIKHOAN>
+
+@{
+    ViewBag.Title = "Danh sách tài khoản";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    int Stt = ViewBag.I;
+}
+
+
+<h2 class="display-6 lb-page">Danh sách các tài khoản hiện có </h2>
+<a class="btn mb-2 btn-outline-primary add-new" href="#">Thêm mới</a>
+<table class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">
+                Họ tên
+            </th>
+            <th scope="col">
+                Email
+            </th>
+            <th scope="col">
+                Chức vụ
+            </th>
+            <th scope="col">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @(Stt++)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.hoten)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cvu)
+            </td>
+            <td>
+                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-calendar-week"></i> Chi tiết</a>
+                <i class="fa-brands fa-squarespace fs-5"></i>
+                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
+                <i class="fa-brands fa-squarespace fs-5"></i>
+                <a href="" e-type="delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
