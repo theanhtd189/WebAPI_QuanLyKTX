@@ -1,0 +1,75 @@
+﻿@model Web.Models.HOCSINH
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>HOCSINH</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PHONG.tenphong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PHONG.tenphong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.hoten)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.hoten)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ngaysinh)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ngaysinh)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quequan)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quequan)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.gioitinh)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gioitinh)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ttphuhuynh)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ttphuhuynh)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lop)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lop)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.mahs }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -139,6 +139,7 @@
   <ItemGroup>
     <Compile Include="APIs\HOADON_APIController.cs" />
     <Compile Include="APIs\HOCSINH_APIController.cs" />
+    <Compile Include="APIs\PHIEU_DIENNUOC_APIController.cs" />
     <Compile Include="APIs\PHONG_APIController.cs" />
     <Compile Include="APIs\TAIKHOAN_APIController.cs" />
     <Compile Include="APIs\VATTU_APIController.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\DienNuocController.cs" />
     <Compile Include="Controllers\HoaDonController.cs" />
     <Compile Include="Controllers\HocSinhController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Middlewares\CheckAuth.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\GIA_DIENNUOC.cs" />
     <Compile Include="Models\HOADON.cs" />
@@ -251,7 +254,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\View.cshtml" />
     <Content Include="Views\Shared\MainLayout.cshtml" />
@@ -268,6 +270,26 @@
     <Content Include="Views\HoaDon\Details.cshtml" />
     <Content Include="Views\HoaDon\Edit.cshtml" />
     <Content Include="Views\HoaDon\Index.cshtml" />
+    <Content Include="Views\DienNuoc\Create.cshtml" />
+    <Content Include="Views\DienNuoc\Delete.cshtml" />
+    <Content Include="Views\DienNuoc\Details.cshtml" />
+    <Content Include="Views\DienNuoc\Edit.cshtml" />
+    <Content Include="Views\DienNuoc\Index.cshtml" />
+    <Content Include="Views\Phong\Create.cshtml" />
+    <Content Include="Views\Phong\Edit.cshtml" />
+    <Content Include="Views\Phong\Details.cshtml" />
+    <Content Include="Views\VatTu\Details.cshtml" />
+    <Content Include="Views\VatTu\Create.cshtml" />
+    <Content Include="Views\VatTu\Edit.cshtml" />
+    <Content Include="Views\HocSinh\Details.cshtml" />
+    <Content Include="Views\HocSinh\Create.cshtml" />
+    <Content Include="Views\HocSinh\Edit.cshtml" />
+    <Content Include="Views\HocSinh\Create_OLD.cshtml" />
+    <Content Include="Views\HocSinh\Create_NEW.cshtml" />
+    <Content Include="Views\HocSinh\Edit_NEW.cshtml" />
+    <Content Include="Views\HocSinh\Edit_OLD.cshtml" />
+    <Content Include="Views\HocSinh\Detail_OLD.cshtml" />
+    <Content Include="Views\HocSinh\Detail_NEW.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

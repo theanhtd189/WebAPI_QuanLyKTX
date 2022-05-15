@@ -38,9 +38,16 @@ namespace Web.APIs
             return result;
         }
 
+        [Route("get/{id:int}")]
+        public HOCSINH GetSingle(int id)
+        {
+            var result = db.HOCSINHs.FirstOrDefault(x => x.mahs == id);
+            return result;
+        }
+
         [HttpGet]
         [Route("get/new")]
-        public List<HOCSINH_NEW> ChuaCoPhong(int? page = 1, int? limit = 0)
+        public List<HOCSINH_NEW> Get(int? page = 1, int? limit = 0)
         {
             var source = db.HOCSINH_NEW.ToList();
             var links = source.OrderBy(x => x.mahs).ToList();
@@ -57,9 +64,16 @@ namespace Web.APIs
             return result;
         }
 
+        [Route("get/new/{id:int}")]
+        public HOCSINH_NEW GetNew(int id)
+        {
+            var result = db.HOCSINH_NEW.FirstOrDefault(x => x.mahs == id);
+            return result;
+        }
+
         [HttpGet]
         [Route("get/old")]
-        public List<HOCSINH_OLD> XoaKhoiPhong(int? page = 1, int? limit = 0)
+        public List<HOCSINH_OLD> GetOld(int? page = 1, int? limit = 0)
         {
             var source = db.HOCSINH_OLD.ToList();
             var links = source.OrderBy(x => x.mahs).ToList();
@@ -76,63 +90,24 @@ namespace Web.APIs
             return result;
         }
 
-        [Route("get/{id:int}")]
-        public HOCSINH GetSingle(int id)
+        [Route("get/old/{id:int}")]
+        public HOCSINH_OLD GetOld(int id)
         {
-            var result = db.HOCSINHs.FirstOrDefault(x => x.mahs == id);
+            var result = db.HOCSINH_OLD.FirstOrDefault(x => x.mahs == id);
             return result;
-        }
+        }      
 
-        // GET: api/HOCSINHs
-        [ResponseType(typeof(HOCSINH))]
-        [Route("api/hocsinhs/get/{id?}")]
-        public IHttpActionResult Get(string id)
-        {
-            if (!string.IsNullOrEmpty(id))
-            {
-                HOCSINH hOCSINH = db.HOCSINHs.FirstOrDefault(x=>x.mahs.ToString()==(id));
-                if (hOCSINH == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(hOCSINH);
-            }
-            else
-            {
-                return NotFound();
-            }    
-        }
-
-        // GET: api/HOCSINHs/5
-     /*   [ResponseType(typeof(HOCSINH))]
-        [Route("api/hocsinhs/get/{id}")]
-        public IHttpActionResult GetHOCSINH(int id)
-        {
-            HOCSINH hOCSINH = db.HOCSINHs.Find(id);
-            if (hOCSINH == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(hOCSINH);
-        }*/
-
-        // PUT: api/HOCSINHs/5
+        [Route("edit/{id}")]
+        [HttpPut]
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutHOCSINH(int id, HOCSINH hOCSINH)
+        public IHttpActionResult Edit(HOCSINH e)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != hOCSINH.mahs)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(hOCSINH).State = EntityState.Modified;
+            db.Entry(e).State = EntityState.Modified;
 
             try
             {
@@ -140,7 +115,7 @@ namespace Web.APIs
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HOCSINHExists(id))
+                if (!HOCSINHExists(e.mahs))
                 {
                     return NotFound();
                 }
@@ -153,35 +128,175 @@ namespace Web.APIs
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/HOCSINHs
-        [ResponseType(typeof(HOCSINH))]
-        public IHttpActionResult PostHOCSINH(HOCSINH hOCSINH)
+        [Route("edit/new")]
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult EditNew(HOCSINH_NEW e)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.HOCSINHs.Add(hOCSINH);
-            db.SaveChanges();
+            db.Entry(e).State = EntityState.Modified;
 
-            return CreatedAtRoute("DefaultApi", new { id = hOCSINH.mahs }, hOCSINH);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException x)
+            {
+                throw x;
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // DELETE: api/HOCSINHs/5
-        [ResponseType(typeof(HOCSINH))]
-        public IHttpActionResult DeleteHOCSINH(int id)
+        [Route("edit/old")]
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult EditOld(HOCSINH_OLD e)
         {
-            HOCSINH hOCSINH = db.HOCSINHs.Find(id);
-            if (hOCSINH == null)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.Entry(e).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException x)
+            {
+                throw x;
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        [Route("post")]
+        [HttpPost]
+        [ResponseType(typeof(HOCSINH))]
+        public IHttpActionResult Create(HOCSINH e)
+        {
+            try
+            {
+                if (!ModelState.IsValid || e == null)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    db.HOCSINHs.Add(e);
+                    db.SaveChanges();
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                throw ex;
+            }
+
+            return CreatedAtRoute("DefaultApi", new { id = e.mahs }, e);
+        }
+
+        [Route("post/new")]
+        [HttpPost]
+        [ResponseType(typeof(HOCSINH_NEW))]
+        public IHttpActionResult CreateNew(HOCSINH_NEW e)
+        {
+            try
+            {
+                if (!ModelState.IsValid || e == null)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    db.HOCSINH_NEW.Add(e);
+                    db.SaveChanges();
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                throw ex;
+            }
+
+            return CreatedAtRoute("DefaultApi", new { id = e.mahs }, e);
+        }
+
+        [Route("post/old")]
+        [HttpPost]
+        [ResponseType(typeof(HOCSINH_OLD))]
+        public IHttpActionResult CreateOld(HOCSINH_OLD e)
+        {
+            try
+            {
+                if (!ModelState.IsValid || e == null)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    db.HOCSINH_OLD.Add(e);
+                    db.SaveChanges();
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                throw ex;
+            }
+
+            return CreatedAtRoute("DefaultApi", new { id = e.mahs }, e);
+        }
+
+        [Route("delete/{id}")]
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
+        {
+            HOCSINH e = db.HOCSINHs.Find(id);
+            if (e == null)
             {
                 return NotFound();
             }
 
-            db.HOCSINHs.Remove(hOCSINH);
+            db.HOCSINHs.Remove(e);
             db.SaveChanges();
 
-            return Ok(hOCSINH);
+            return Ok(e);
+        }
+
+        [Route("delete/new/{id}")]
+        [HttpDelete]
+        public IHttpActionResult DeleteNew(int id)
+        {
+            HOCSINH_NEW e = db.HOCSINH_NEW.Find(id);
+            if (e == null)
+            {
+                return NotFound();
+            }
+
+            db.HOCSINH_NEW.Remove(e);
+            db.SaveChanges();
+
+            return Ok(e);
+        }
+
+        [Route("delete/old/{id}")]
+        [HttpDelete]
+        public IHttpActionResult DeleteOld(int id)
+        {
+            HOCSINH_OLD e = db.HOCSINH_OLD.Find(id);
+            if (e == null)
+            {
+                return NotFound();
+            }
+
+            db.HOCSINH_OLD.Remove(e);
+            db.SaveChanges();
+
+            return Ok(e);
         }
 
         protected override void Dispose(bool disposing)

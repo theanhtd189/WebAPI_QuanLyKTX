@@ -1,0 +1,51 @@
+﻿@model Web.Models.PHONG
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PHONG</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.tenphong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tenphong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tsogiuong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tsogiuong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tang)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tang)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tinhtrang)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tinhtrang)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.maphong }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

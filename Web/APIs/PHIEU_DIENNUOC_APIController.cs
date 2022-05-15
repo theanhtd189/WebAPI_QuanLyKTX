@@ -13,42 +13,39 @@ using PagedList;
 
 namespace Web.APIs
 {
-    [RoutePrefix("api/phong")]
-    public class PHONG_APIController : ApiController
+    [RoutePrefix("api/diennuoc")]
+    public class PHIEU_DIENNUOC_APIController : ApiController
     {
-
         private Context db = new Context();
 
-
         [Route("get")]
-        public List<PHONG> GetList(int? page=1, int? limit = 0)
+        public List<PHIEU_DIENNUOC> GetList(int? page = 1, int? limit = 0)
         {
-            var links = db.PHONGs.OrderBy(x => x.maphong).ToList();
+            var links = db.PHIEU_DIENNUOC.OrderBy(x => x.maphieu).ToList();
             int pageNumber = (page ?? 1);
-            var result = new List<PHONG>();
+            var result = new List<PHIEU_DIENNUOC>();
 
-            if(limit<=0)
+            if (limit <= 0)
             {
-                result = db.PHONGs.ToList();
+                result = db.PHIEU_DIENNUOC.ToList();
             }
             else
-                result = links.ToPagedList(pageNumber, (int)limit).ToList();               
+                result = links.ToPagedList(pageNumber, (int)limit).ToList();
 
             return result;
         }
 
         [Route("get/{id}")]
-        public PHONG GetSingle(int id)
+        public PHIEU_DIENNUOC GetSingle(int id)
         {
-            var result = db.PHONGs.FirstOrDefault(x=>x.maphong==id);
+            var result = db.PHIEU_DIENNUOC.FirstOrDefault(x => x.maphieu == id);
             return result;
         }
-
 
         [Route("edit/{id}")]
         [HttpPut]
         [ResponseType(typeof(void))]
-        public IHttpActionResult Edit(PHONG e)
+        public IHttpActionResult Edit(PHIEU_DIENNUOC e)
         {
             if (!ModelState.IsValid)
             {
@@ -63,7 +60,7 @@ namespace Web.APIs
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PHONGExists(e.maphong))
+                if (!PHIEU_DIENNUOCExists(e.maphieu))
                 {
                     return NotFound();
                 }
@@ -78,8 +75,8 @@ namespace Web.APIs
 
 
         [Route("post")]
-        [ResponseType(typeof(PHONG))]
-        public IHttpActionResult Create(PHONG e)
+        [ResponseType(typeof(PHIEU_DIENNUOC))]
+        public IHttpActionResult Create(PHIEU_DIENNUOC e)
         {
             try
             {
@@ -89,14 +86,14 @@ namespace Web.APIs
                 }
                 else
                 {
-                    db.PHONGs.Add(e);
+                    db.PHIEU_DIENNUOC.Add(e);
                     db.SaveChanges();
                 }
             }
             catch (DbUpdateException ex)
             {
                 throw ex;
-                if (PHONGExists(e.maphong))
+                if (PHIEU_DIENNUOCExists(e.maphieu))
                 {
                     return Conflict();
                 }
@@ -106,24 +103,24 @@ namespace Web.APIs
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = e.maphong }, e);
+            return CreatedAtRoute("DefaultApi", new { id = e.maphieu }, e);
         }
 
         [Route("delete/{id}")]
         [HttpDelete]
-        [ResponseType(typeof(PHONG))]
+        [ResponseType(typeof(PHIEU_DIENNUOC))]
         public IHttpActionResult Delete(int id)
         {
-            PHONG PHONG = db.PHONGs.Find(id);
-            if (PHONG == null)
+            PHIEU_DIENNUOC PHIEU_DIENNUOC = db.PHIEU_DIENNUOC.Find(id);
+            if (PHIEU_DIENNUOC == null)
             {
                 return NotFound();
             }
 
-            db.PHONGs.Remove(PHONG);
+            db.PHIEU_DIENNUOC.Remove(PHIEU_DIENNUOC);
             db.SaveChanges();
 
-            return Ok(PHONG);
+            return Ok(PHIEU_DIENNUOC);
         }
 
         protected override void Dispose(bool disposing)
@@ -135,9 +132,9 @@ namespace Web.APIs
             base.Dispose(disposing);
         }
 
-        private bool PHONGExists(int id)
+        private bool PHIEU_DIENNUOCExists(int id)
         {
-            return db.PHONGs.Count(e => e.maphong == id) > 0;
+            return db.PHIEU_DIENNUOC.Count(e => e.maphieu == id) > 0;
         }
     }
 }

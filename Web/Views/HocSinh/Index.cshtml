@@ -7,7 +7,7 @@
 
 
 <h2 class="display-6 text-capitalize lb-page">Danh sách các học sinh @(ViewBag.Stt!=null?ViewBag.Stt==true?"chưa được xếp phòng":"đã xóa khỏi phòng":"đã được xếp phòng")</h2>
-<a class="btn mb-2 btn-outline-primary add-new" href="#">Thêm mới</a>
+<a class="btn mb-2 btn-outline-primary add-new" e-type="create" href="#">Thêm mới</a>
 <table class="table table-striped table-dark text-capitalize">
     <thead>
         <tr>
@@ -53,11 +53,11 @@
                 @Html.DisplayFor(m => item.lop)
             </td>
             <td>
-                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-calendar-week"></i> Chi tiết</a>
+                <a e-id="@item.mahs" e-type="detail" class="btn bg-primary text-white"><i class="fa-solid fa-calendar-week"></i> Chi tiết</a>
                 <i class="fa-brands fa-squarespace fs-5"></i>
-                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
+                <a e-id="@item.mahs" e-type="edit" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
                 <i class="fa-brands fa-squarespace fs-5"></i>
-                <a href="" e-type="delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
+                <a e-id="@item.mahs" e-type="delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
             </td>
         </tr>
         }

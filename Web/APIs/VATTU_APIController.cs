@@ -120,6 +120,86 @@ namespace Web.APIs
 
             return Ok(vATTU);
         }
+        [Route("edit/{id}")]
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult Edit(VATTU e)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.Entry(e).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!VATTUExists(e.mavt))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        [Route("post")]
+        [ResponseType(typeof(VATTU))]
+        public IHttpActionResult Create(VATTU e)
+        {
+            try
+            {
+                if (!ModelState.IsValid || e == null)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    db.VATTUs.Add(e);
+                    db.SaveChanges();
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                throw ex;
+                if (VATTUExists(e.mavt))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtRoute("DefaultApi", new { id = e.mavt }, e);
+        }
+
+        [Route("delete/{id}")]
+        [HttpDelete]
+        [ResponseType(typeof(VATTU))]
+        public IHttpActionResult Delete(int id)
+        {
+            VATTU VATTU = db.VATTUs.Find(id);
+            if (VATTU == null)
+            {
+                return NotFound();
+            }
+
+            db.VATTUs.Remove(VATTU);
+            db.SaveChanges();
+
+            return Ok(VATTU);
+        }
 
         protected override void Dispose(bool disposing)
         {

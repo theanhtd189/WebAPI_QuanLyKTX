@@ -42,21 +42,18 @@ namespace Web.APIs
             return result;
         }      
 
-        // PUT: api/TAIKHOAN_API/5
+
+        [Route("edit/{id}")]
+        [HttpPut]
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutTAIKHOAN(int id, TAIKHOAN tAIKHOAN)
+        public IHttpActionResult Edit(TAIKHOAN e)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != tAIKHOAN.matk)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(tAIKHOAN).State = EntityState.Modified;
+            db.Entry(e).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +61,7 @@ namespace Web.APIs
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TAIKHOANExists(id))
+                if (!TAIKHOANExists(e.matk))
                 {
                     return NotFound();
                 }
@@ -77,24 +74,42 @@ namespace Web.APIs
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/TAIKHOAN_API
-        [ResponseType(typeof(TAIKHOAN))]
-        public IHttpActionResult PostTAIKHOAN(TAIKHOAN tAIKHOAN)
+
+        [Route("post")]
+        [ResponseType(typeof(TAIKHOAN))]     
+        public IHttpActionResult Create(TAIKHOAN e)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid || e==null)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    db.TAIKHOANs.Add(e);
+                    db.SaveChanges();
+                }               
+            }
+            catch (DbUpdateException ex)
+            {
+                if (TAIKHOANExists(e.matk))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            db.TAIKHOANs.Add(tAIKHOAN);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = tAIKHOAN.matk }, tAIKHOAN);
+            return CreatedAtRoute("DefaultApi", new { id = e.matk }, e);
         }
 
-        // DELETE: api/TAIKHOAN_API/5
+        [Route("delete/{id}")]
+        [HttpDelete]
         [ResponseType(typeof(TAIKHOAN))]
-        public IHttpActionResult DeleteTAIKHOAN(int id)
+        public IHttpActionResult Delete(int id)
         {
             TAIKHOAN tAIKHOAN = db.TAIKHOANs.Find(id);
             if (tAIKHOAN == null)

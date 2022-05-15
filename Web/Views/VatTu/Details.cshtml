@@ -1,0 +1,43 @@
+﻿@model Web.Models.VATTU
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>VATTU</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.tenvattu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tenvattu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.soluong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.soluong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.giatien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.giatien)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.mavt }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

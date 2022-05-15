@@ -1,93 +1,117 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string Msg = "";
+    if (ViewBag.Msg != null)
+    {
+        Msg = ViewBag.Msg;
+    }
+    else
+        if (Session["Msg"] != null)
+    {
+        Msg = Session["Msg"].ToString();
+    }
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Error</title>
     <style>
         body {
-  background-color: #2F3242;
-}
-svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -250px;
-  margin-left: -400px;
-}
-.message-box {
-  height: 200px;
-  width: 380px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -100px;
-  margin-left: 50px;
-  color: #FFF;
-  font-family: Roboto;
-  font-weight: 300;
-}
-.message-box h1 {
-  font-size: 60px;
-  line-height: 46px;
-  margin-bottom: 40px;
-}
-.buttons-con .action-link-wrap {
-  margin-top: 40px;
-}
-.buttons-con .action-link-wrap a {
-  background: #68c950;
-  padding: 8px 25px;
-  border-radius: 4px;
-  color: #FFF;
-  font-weight: bold;
-  font-size: 14px;
-  transition: all 0.3s linear;
-  cursor: pointer;
-  text-decoration: none;
-  margin-right: 10px
-}
-.buttons-con .action-link-wrap a:hover {
-  background: #5A5C6C;
-  color: #fff;
-}
+            background-color: #2F3242;
+        }
 
-#Polygon-1 , #Polygon-2 , #Polygon-3 , #Polygon-4 , #Polygon-4, #Polygon-5 {
-  animation: float 1s infinite ease-in-out alternate;
-}
-#Polygon-2 {
-  animation-delay: .2s;
-}
-#Polygon-3 {
-  animation-delay: .4s;
-}
-#Polygon-4 {
-  animation-delay: .6s;
-}
-#Polygon-5 {
-  animation-delay: .8s;
-}
+        svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -250px;
+            margin-left: -400px;
+        }
 
-@@keyframes float {
-	100% {
-    transform: translateY(20px);
-  }
-}
-@@media (max-width: 450px) {
-  svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -250px;
-    margin-left: -190px;
-  }
-  .message-box {
-    top: 50%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -190px;
-    text-align: center;
-  }
-}
+        .message-box {
+            height: 200px;
+            width: 380px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -100px;
+            margin-left: 50px;
+            color: #FFF;
+            font-family: Roboto;
+            font-weight: 300;
+        }
+
+            .message-box h1 {
+                font-size: 60px;
+                line-height: 46px;
+                margin-bottom: 40px;
+            }
+
+        .buttons-con .action-link-wrap {
+            margin-top: 40px;
+        }
+
+            .buttons-con .action-link-wrap a {
+                background: #68c950;
+                padding: 8px 25px;
+                border-radius: 4px;
+                color: #FFF;
+                font-weight: bold;
+                font-size: 14px;
+                transition: all 0.3s linear;
+                cursor: pointer;
+                text-decoration: none;
+                margin-right: 10px
+            }
+
+                .buttons-con .action-link-wrap a:hover {
+                    background: #5A5C6C;
+                    color: #fff;
+                }
+
+        #Polygon-1, #Polygon-2, #Polygon-3, #Polygon-4, #Polygon-4, #Polygon-5 {
+            animation: float 1s infinite ease-in-out alternate;
+        }
+
+        #Polygon-2 {
+            animation-delay: .2s;
+        }
+
+        #Polygon-3 {
+            animation-delay: .4s;
+        }
+
+        #Polygon-4 {
+            animation-delay: .6s;
+        }
+
+        #Polygon-5 {
+            animation-delay: .8s;
+        }
+
+        @@keyframes float {
+            100% {
+                transform: translateY(20px);
+            }
+        }
+
+        @@media (max-width: 450px) {
+            svg {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-top: -250px;
+                margin-left: -190px;
+            }
+
+            .message-box {
+                top: 50%;
+                left: 50%;
+                margin-top: -100px;
+                margin-left: -190px;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -103,11 +127,16 @@ svg {
     </svg>
     <div class="message-box">
         <h1>ERROR @ViewBag.Code</h1>
-        <p>@ViewBag.Msg</p>
+        <p>@Msg</p>
         <div class="buttons-con">
             <div class="action-link-wrap">
                 <a href="@Url.Action("Index","Home")" class="link-button link-back-button">Trang chủ</a>
-                <a href="@ViewBag.Url_Error" target="_blank" class="link-button">Check ENDPOINT </a>
+                @{
+                    if (ViewBag.Url_Error != null)
+                    {
+                        <a href="@ViewBag.Url_Error" target="_blank" class="link-button">Check ENDPOINT </a>
+                    }
+                }
             </div>
         </div>
     </div>

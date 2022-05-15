@@ -15,16 +15,17 @@ namespace Web.Controllers
     {
         private Context db = new Context();
 
-        // GET: TAIKHOANs
-        public ActionResult Index(int page = 1, int limit = 10)
+        public ActionResult Index(int page = 1, int limit = 10, string msg="")
         {
-
             using (var client = new HttpClient())
             {
+                if (!string.IsNullOrEmpty(msg))
+                {
+                    ViewBag.Msg = msg;
+                }
                 var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
                 var _api = Url.Action("get", "taikhoan", new { httproute = "DefaultApi", limit = limit, page = page });
-                var _url = _host + _api;
-                // client.BaseAddress = new Uri(_url);              
+                var _url = _host + _api;          
                 var responseTask = client.GetAsync(_url);
                 responseTask.Wait();
 
@@ -42,7 +43,7 @@ namespace Web.Controllers
                     ViewBag.I = 1;
                     if (ViewBag.CurrentPage > 1)
                     {
-                        ViewBag.Stt = (ViewBag.CurrentPage - 1) * 10 + 1; //số thứ tự tiếp theo 
+                        ViewBag.I = (ViewBag.CurrentPage - 1) * 10 + 1; //số thứ tự tiếp theo 
                     }
                     return View("~/Views/Taikhoan/Index.cshtml",list.ToList());
                 }
@@ -56,7 +57,6 @@ namespace Web.Controllers
             }
         }
 
-        // GET: TAIKHOANs/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -71,84 +71,123 @@ namespace Web.Controllers
             return View(tAIKHOAN);
         }
 
-        // GET: TAIKHOANs/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: TAIKHOANs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "matk,hoten,email,pass,cvu")] TAIKHOAN tAIKHOAN)
+        public ActionResult Create([Bind(Include = "matk,hoten,email,pass,cvu")] TAIKHOAN e)
         {
-            if (ModelState.IsValid)
+            using (var client = new HttpClient())
             {
-                db.TAIKHOANs.Add(tAIKHOAN);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
+                var _api = Url.Action("post", "taikhoan", new { httproute = "DefaultApi" });
+                var _url = _host + _api;
 
-            return View(tAIKHOAN);
+                var postTask = client.PostAsJsonAsync<TAIKHOAN>(_url, e);
+                postTask.Wait();
+
+                var result = postTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Msg = result.ReasonPhrase;
+                    ViewBag.Url_Error = _url;
+                    ViewBag.Code = (int)result.StatusCode;
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+            }
         }
 
-        // GET: TAIKHOANs/Edit/5
+       
+        [HttpGet]
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            using (var client = new HttpClient())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
+                var _api = Url.Action("get", "taikhoan", new { httproute = "DefaultApi", id=id });
+                var _url = _host + _api;
+                var responseTask = client.GetAsync(_url);
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<TAIKHOAN>();
+                    readTask.Wait();
+                    var e = readTask.Result;
+                    return View(e);
+                }
+                else
+                {
+                    ViewBag.Msg = result.ReasonPhrase;
+                    ViewBag.Url_Error = _url;
+                    ViewBag.Code = (int)result.StatusCode;
+                    return View("~/Views/Shared/Error.cshtml");
+                }
             }
-            TAIKHOAN tAIKHOAN = db.TAIKHOANs.Find(id);
-            if (tAIKHOAN == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tAIKHOAN);
         }
 
-        // POST: TAIKHOANs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "matk,hoten,email,pass,cvu")] TAIKHOAN tAIKHOAN)
+        public ActionResult Edit([Bind(Include = "matk,hoten,email,pass,cvu")] TAIKHOAN e)
         {
-            if (ModelState.IsValid)
+            using (var client = new HttpClient())
             {
-                db.Entry(tAIKHOAN).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
+                var _api = Url.Action("edit", "taikhoan", new { httproute = "DefaultApi"});
+                var _url = _host + _api;
+                var responseTask = client.PutAsJsonAsync<TAIKHOAN>(_url, e);
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Msg = result.ReasonPhrase;
+                    ViewBag.Url_Error = _url;
+                    ViewBag.Code = (int)result.StatusCode;
+                    return RedirectToAction("Index", new { msg = ViewBag.Msg });
+                }
             }
-            return View(tAIKHOAN);
         }
 
-        // GET: TAIKHOANs/Delete/5
+
+        [HttpGet]
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            using (var client = new HttpClient())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TAIKHOAN tAIKHOAN = db.TAIKHOANs.Find(id);
-            if (tAIKHOAN == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tAIKHOAN);
-        }
+                var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
+                var _api = Url.Action("delete", "taikhoan", new { httproute = "DefaultApi" , id=id});
+                var _url = _host + _api;
+                var deleteTask = client.DeleteAsync(_url);
+                deleteTask.Wait();
 
-        // POST: TAIKHOANs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            TAIKHOAN tAIKHOAN = db.TAIKHOANs.Find(id);
-            db.TAIKHOANs.Remove(tAIKHOAN);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+                var result = deleteTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Msg = result.ReasonPhrase;
+                    ViewBag.Url_Error = _url;
+                    ViewBag.Code = (int)result.StatusCode;
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+            }
+
         }
 
         protected override void Dispose(bool disposing)

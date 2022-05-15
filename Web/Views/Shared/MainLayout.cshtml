@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     string _controller = ViewContext.RouteData.Values["controller"].ToString();
     string _action = ViewContext.RouteData.Values["action"].ToString();
 }
@@ -114,7 +114,7 @@
                     </a>
                     <div class="collapse" id="t3">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-dark rounded">Danh sách phiếu</a></li>
+                            <li><a href="@Url.Action("","DienNuoc")" class="link-dark rounded">Danh sách phiếu</a></li>
                             <li><a href="#" class="link-dark rounded">Thêm phiếu</a></li>
                         </ul>
                     </div>
@@ -132,19 +132,19 @@
                     </div>
                 </li>
                 <li class="mn-li">
-                    <a class="nav-link mb-1" data-bs-toggle="collapse" data-bs-target="#t5" aria-expanded="false">
+                    <a href="#" class="nav-link mb-1" data-bs-toggle="collapse" data-bs-target="#t5" aria-expanded="false">
                         <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle" /></svg>
-                        Quản lý hóa đơn
+                        Quản lý hóa đơn phòng
                     </a>
                     <div class="collapse" id="t5">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-dark rounded">Danh sách hóa đơn</a></li>
+                            <li><a href="@Url.Action("","HoaDon")" class="link-dark rounded">Danh sách hóa đơn</a></li>
                             <li><a href="#" class="link-dark rounded">Thêm hóa đơn</a></li>
                         </ul>
                     </div>
                 </li>
                 <li class="mn-li">
-                    <a href="@Url.Action("Index","TaiKhoan")" class="nav-link mb-1" data-bs-toggle="collapse" data-bs-target="#t5" aria-expanded="false">
+                    <a href="@Url.Action("Index","TaiKhoan")" class="nav-link mb-1">
                         <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle" /></svg>
                         Quản lý tài khoản
                     </a>
@@ -170,11 +170,12 @@
         <div class="b-example-divider"></div>
         <div class="container px-4 py-3">
             @RenderBody()
-            <p>page: @(ViewBag.CurrentPage!=null?ViewBag.CurrentPage:1)</p>
-            <p>total: @ViewBag.TotalPage</p>
-            
 
-            @if (ViewBag.TotalPage != null && ViewBag.TotalPage>1)
+         @*   <p>page: @(ViewBag.CurrentPage!=null?ViewBag.CurrentPage:1)</p>
+            <p>total: @ViewBag.TotalPage</p>*@
+
+
+            @if (ViewBag.TotalPage != null && ViewBag.TotalPage > 1)
             {
                 <nav>
                     <ul class="pagination">
@@ -223,16 +224,36 @@
             $("li.mn-li").each(function () {
                 $(this).children("a").removeClass("active");
             })
-
-
             if (stt)
                 $(this).children("a").removeClass("active");
             else
                 $(this).children("a").addClass("active");
         })
-
         $("[e-type='delete']").click(function () {
-            return confirm("Bạn có muốn xóa bản ghi này?");
+            var c = confirm("Bạn có muốn xóa bản ghi này?");
+            if (c) {
+                var _id = $(this).attr("e-id");
+                $(this).attr('href',"/@_controller/Delete/" + _id + "@(ViewBag.Stt!=null?ViewBag.Stt==true? "?stt=True" : "?stt=False" : "")");
+            }
+        })
+
+        $("[e-type='edit']").click(function () {
+            var _id = $(this).attr("e-id");
+            $(this).attr('href',"/@_controller/Edit/" + _id + "@(ViewBag.Stt!=null?ViewBag.Stt==true? "?stt=True" : "?stt=False" : "")");
+        })
+
+        $("[e-type='detail']").click(function () {
+            var _id = $(this).attr("e-id");
+            $(this).attr('href',"/@_controller/Details/" + _id +"@(ViewBag.Stt!=null?ViewBag.Stt==true? "?stt=True" : "?stt=False" : "")");
+        })
+
+        $("[e-type='create']").click(function () {
+            $(this).attr('href',"/@_controller/Create/"+"@(ViewBag.Stt!=null?ViewBag.Stt==true? "?stt=True" : "?stt=False" : "")");
         })
     })
 </script>
+
+@if (ViewBag.Msg != null)
+{
+    <script>alert("@ViewBag.Msg")</script>
+}

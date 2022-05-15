@@ -1,0 +1,75 @@
+﻿@model Web.Models.PHIEU_DIENNUOC
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PHIEU_DIENNUOC</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PHONG.tenphong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PHONG.tenphong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ngaytaophieu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ngaytaophieu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sodien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sodien)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sonuoc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sonuoc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.giadien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.giadien)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.gianuoc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gianuoc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tongtien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tongtien)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.maphieu }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

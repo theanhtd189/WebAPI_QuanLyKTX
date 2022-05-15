@@ -1,18 +1,17 @@
 ﻿@model Web.Models.TAIKHOAN
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Sửa tài khoản";
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Sửa thông tin tài khoản</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>TAIKHOAN</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.matk)

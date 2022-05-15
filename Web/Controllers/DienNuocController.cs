@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -9,36 +11,31 @@ using Web.Models;
 
 namespace Web.Controllers
 {
-    public class PhongController : Controller
+    public class DienNuocController : Controller
     {
-        // GET: Phong
         private Context db = new Context();
 
-        public ActionResult Index(int page = 1, int limit = 10, string msg = "")
+        // GET: DienNuoc
+        public ActionResult Index(int page = 1, int limit = 10)
         {
 
             using (var client = new HttpClient())
             {
-                if (!string.IsNullOrEmpty(msg))
-                {
-                    ViewBag.Msg = msg;
-                }
                 var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
-                var _api = Url.Action("get", "phong", new { httproute = "DefaultApi", limit = limit, page = page });
+                var _api = Url.Action("get", "diennuoc", new { httproute = "DefaultApi", limit = limit, page = page });
                 var _url = _host + _api;
-                // client.BaseAddress = new Uri(_url);              
                 var responseTask = client.GetAsync(_url);
                 responseTask.Wait();
 
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<IList<PHONG>>();
+                    var readTask = result.Content.ReadAsAsync<IList<PHIEU_DIENNUOC>>();
                     readTask.Wait();
-                    IEnumerable<PHONG> list = null;
+                    IEnumerable<PHIEU_DIENNUOC> list = null;
                     list = readTask.Result;
                     ViewBag.CurrentPage = page;
-                    var o_list = new Context().PHONGs.ToList();
+                    var o_list = new Context().PHIEU_DIENNUOC.ToList();
                     ViewBag.TotalPage = Math.Ceiling((float)o_list.Count / 10);
                     ViewBag.TotalPage_List = o_list;
                     ViewBag.I = 1;
@@ -57,14 +54,13 @@ namespace Web.Controllers
                 }
             }
         }
-
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PHONG e = db.PHONGs.Find(id);
+            PHIEU_DIENNUOC e = db.PHIEU_DIENNUOC.Find(id);
             if (e == null)
             {
                 return HttpNotFound();
@@ -80,15 +76,15 @@ namespace Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PHONG e)
+        public ActionResult Create(PHIEU_DIENNUOC e)
         {
             using (var client = new HttpClient())
             {
                 var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
-                var _api = Url.Action("post", "PHONG", new { httproute = "DefaultApi" });
+                var _api = Url.Action("post", "DIENNUOC", new { httproute = "DefaultApi" });
                 var _url = _host + _api;
 
-                var postTask = client.PostAsJsonAsync<PHONG>(_url, e);
+                var postTask = client.PostAsJsonAsync<PHIEU_DIENNUOC>(_url, e);
                 postTask.Wait();
 
                 var result = postTask.Result;
@@ -113,7 +109,7 @@ namespace Web.Controllers
             using (var client = new HttpClient())
             {
                 var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
-                var _api = Url.Action("get", "PHONG", new { httproute = "DefaultApi", id = id });
+                var _api = Url.Action("get", "DIENNUOC", new { httproute = "DefaultApi", id = id });
                 var _url = _host + _api;
                 var responseTask = client.GetAsync(_url);
                 responseTask.Wait();
@@ -121,7 +117,7 @@ namespace Web.Controllers
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<PHONG>();
+                    var readTask = result.Content.ReadAsAsync<PHIEU_DIENNUOC>();
                     readTask.Wait();
                     var e = readTask.Result;
                     return View(e);
@@ -139,14 +135,14 @@ namespace Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(PHONG e)
+        public ActionResult Edit(PHIEU_DIENNUOC e)
         {
             using (var client = new HttpClient())
             {
                 var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
-                var _api = Url.Action("edit", "PHONG", new { httproute = "DefaultApi" });
+                var _api = Url.Action("edit", "DIENNUOC", new { httproute = "DefaultApi" });
                 var _url = _host + _api;
-                var responseTask = client.PutAsJsonAsync<PHONG>(_url, e);
+                var responseTask = client.PutAsJsonAsync<PHIEU_DIENNUOC>(_url, e);
                 responseTask.Wait();
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
@@ -170,7 +166,7 @@ namespace Web.Controllers
             using (var client = new HttpClient())
             {
                 var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
-                var _api = Url.Action("delete", "PHONG", new { httproute = "DefaultApi", id = id });
+                var _api = Url.Action("delete", "DIENNUOC", new { httproute = "DefaultApi", id = id });
                 var _url = _host + _api;
                 var deleteTask = client.DeleteAsync(_url);
                 deleteTask.Wait();

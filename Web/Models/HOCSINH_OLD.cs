@@ -9,7 +9,7 @@ namespace Web.Models
     public partial class HOCSINH_OLD
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int mahs { get; set; }
 
         [StringLength(50)]

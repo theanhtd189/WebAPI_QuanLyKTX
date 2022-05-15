@@ -18,6 +18,7 @@
 .nav-link, .nav-link:hover {
     color: whitesmoke;
     background-color: #3a3a3a;
+    cursor:pointer;
 }
 
 .link-dark {
@@ -55,4 +56,7 @@
     transition: .5s;
     -webkit-animation: bounce-top 0.9s both;
     animation: bounce-top 0.9s both;
+}
+.table > :not(caption) > * > * , td > * {
+    vertical-align:middle;
 }

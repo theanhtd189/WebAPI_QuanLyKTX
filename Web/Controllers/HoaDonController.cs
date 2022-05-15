@@ -16,7 +16,7 @@ namespace Web.Controllers
         private Context db = new Context();
 
         // GET: HoaDon
-        public ActionResult index(int page = 1, int limit = 10)
+        public ActionResult Index(int page = 1, int limit = 10)
         {
 
             using (var client = new HttpClient())
@@ -41,7 +41,7 @@ namespace Web.Controllers
                     ViewBag.I = 1;
                     if (ViewBag.CurrentPage > 1)
                     {
-                        ViewBag.Stt = (ViewBag.CurrentPage - 1) * 10 + 1; //số thứ tự tiếp theo 
+                        ViewBag.I = (ViewBag.CurrentPage - 1) * 10 + 1; //số thứ tự tiếp theo 
                     }
                     return View(list.ToList());
                 }
@@ -62,105 +62,131 @@ namespace Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HOADON hOADON = db.HOADONs.Find(id);
-            if (hOADON == null)
+            HOADON e = db.HOADONs.Find(id);
+            if (e == null)
             {
                 return HttpNotFound();
             }
-            return View(hOADON);
+            return View(e);
         }
 
-        // GET: HoaDon/Create
         public ActionResult Create()
         {
-            ViewBag.phong = new SelectList(db.PHONGs, "maphong", "tenphong");
             return View();
         }
 
-        // POST: HoaDon/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "mahd,ngayhoadon,phong,tiendiennuoc,tongtien,tienphong,tenhs,tennv,maphieudiennuoc")] HOADON hOADON)
+        public ActionResult Create(HOADON e)
         {
-            if (ModelState.IsValid)
+            using (var client = new HttpClient())
             {
-                db.HOADONs.Add(hOADON);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
+                var _api = Url.Action("post", "HOADON", new { httproute = "DefaultApi" });
+                var _url = _host + _api;
 
-            ViewBag.phong = new SelectList(db.PHONGs, "maphong", "tenphong", hOADON.maphong);
-            return View(hOADON);
+                var postTask = client.PostAsJsonAsync<HOADON>(_url, e);
+                postTask.Wait();
+
+                var result = postTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Msg = result.ReasonPhrase;
+                    ViewBag.Url_Error = _url;
+                    ViewBag.Code = (int)result.StatusCode;
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+            }
         }
 
-        // GET: HoaDon/Edit/5
+
+        [HttpGet]
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            using (var client = new HttpClient())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
+                var _api = Url.Action("get", "HOADON", new { httproute = "DefaultApi", id = id });
+                var _url = _host + _api;
+                var responseTask = client.GetAsync(_url);
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<HOADON>();
+                    readTask.Wait();
+                    var e = readTask.Result;
+                    return View(e);
+                }
+                else
+                {
+                    ViewBag.Msg = result.ReasonPhrase;
+                    ViewBag.Url_Error = _url;
+                    ViewBag.Code = (int)result.StatusCode;
+                    return View("~/Views/Shared/Error.cshtml");
+                }
             }
-            HOADON hOADON = db.HOADONs.Find(id);
-            if (hOADON == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.phong = new SelectList(db.PHONGs, "maphong", "tenphong", hOADON.maphong);
-            return View(hOADON);
         }
 
-        // POST: HoaDon/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "mahd,ngayhoadon,phong,tiendiennuoc,tongtien,tienphong,tenhs,tennv,maphieudiennuoc")] HOADON hOADON)
+        public ActionResult Edit(HOADON e)
         {
-            if (ModelState.IsValid)
+            using (var client = new HttpClient())
             {
-                db.Entry(hOADON).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
+                var _api = Url.Action("edit", "HOADON", new { httproute = "DefaultApi" });
+                var _url = _host + _api;
+                var responseTask = client.PutAsJsonAsync<HOADON>(_url, e);
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Msg = result.ReasonPhrase;
+                    ViewBag.Url_Error = _url;
+                    ViewBag.Code = (int)result.StatusCode;
+                    return RedirectToAction("Index", new { msg = ViewBag.Msg });
+                }
             }
-            ViewBag.phong = new SelectList(db.PHONGs, "maphong", "tenphong", hOADON.maphong);
-            return View(hOADON);
         }
 
-        // GET: HoaDon/Delete/5
+
+        [HttpGet]
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            using (var client = new HttpClient())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            HOADON hOADON = db.HOADONs.Find(id);
-            if (hOADON == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hOADON);
-        }
+                var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
+                var _api = Url.Action("delete", "HOADON", new { httproute = "DefaultApi", id = id });
+                var _url = _host + _api;
+                var deleteTask = client.DeleteAsync(_url);
+                deleteTask.Wait();
 
-        // POST: HoaDon/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            HOADON hOADON = db.HOADONs.Find(id);
-            db.HOADONs.Remove(hOADON);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
+                var result = deleteTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Msg = result.ReasonPhrase;
+                    ViewBag.Url_Error = _url;
+                    ViewBag.Code = (int)result.StatusCode;
+                    return View("~/Views/Shared/Error.cshtml");
+                }
             }
-            base.Dispose(disposing);
+
         }
     }
 }

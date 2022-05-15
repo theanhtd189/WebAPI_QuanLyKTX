@@ -42,21 +42,17 @@ namespace Web.APIs
             return result;
         }
 
-        // PUT: api/HOADONs/5
+        [Route("edit/{id}")]
+        [HttpPut]
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutHOADON(int id, HOADON hOADON)
+        public IHttpActionResult Edit(HOADON e)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != hOADON.mahd)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(hOADON).State = EntityState.Modified;
+            db.Entry(e).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +60,7 @@ namespace Web.APIs
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HOADONExists(id))
+                if (!HOADONExists(e.mahd))
                 {
                     return NotFound();
                 }
@@ -77,35 +73,53 @@ namespace Web.APIs
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/HOADONs
+
+        [Route("post")]
         [ResponseType(typeof(HOADON))]
-        public IHttpActionResult PostHOADON(HOADON hOADON)
+        public IHttpActionResult Create(HOADON e)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid || e == null)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    db.HOADONs.Add(e);
+                    db.SaveChanges();
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                if (HOADONExists(e.mahd))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            db.HOADONs.Add(hOADON);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = hOADON.mahd }, hOADON);
+            return CreatedAtRoute("DefaultApi", new { id = e.mahd }, e);
         }
 
-        // DELETE: api/HOADONs/5
+        [Route("delete/{id}")]
+        [HttpDelete]
         [ResponseType(typeof(HOADON))]
-        public IHttpActionResult DeleteHOADON(int id)
+        public IHttpActionResult Delete(int id)
         {
-            HOADON hOADON = db.HOADONs.Find(id);
-            if (hOADON == null)
+            HOADON HOADON = db.HOADONs.Find(id);
+            if (HOADON == null)
             {
                 return NotFound();
             }
 
-            db.HOADONs.Remove(hOADON);
+            db.HOADONs.Remove(HOADON);
             db.SaveChanges();
 
-            return Ok(hOADON);
+            return Ok(HOADON);
         }
 
         protected override void Dispose(bool disposing)
