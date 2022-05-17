@@ -1,121 +1,290 @@
 ﻿@{
     Layout = "~/Views/Shared/MainLayout.cshtml";
-}
-<h2 class="display-6 text-capitalize lb-page">abc </h2>
-<a class="btn mb-2 btn-outline-primary" href="#"><i class="fa-solid fa-plus"></i> Thêm mới</a>
-<table class="table table-striped table-dark">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-            <th scope="col">Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
-            <td>
-                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-                <i class="fa-brands fa-squarespace fs-5"></i>
-                <a href="" e-type="delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
-            <td>
-                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-                <i class="fa-brands fa-squarespace fs-5"></i>
-                <a href="?Xoa/2" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
-            <td>
-                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-                <i class="fa-brands fa-squarespace fs-5"></i>
-                <a href="" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
-            <td>
-                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-                <i class="fa-brands fa-squarespace fs-5"></i>
-                <a href="" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
-            <td>
-                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-                <i class="fa-brands fa-squarespace fs-5"></i>
-                <a href="" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
-            <td>
-                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-                <i class="fa-brands fa-squarespace fs-5"></i>
-                <a href="" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
-            <td>
-                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-                <i class="fa-brands fa-squarespace fs-5"></i>
-                <a href="" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
-            </td>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
-            <td>
-                <a href="" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-                <i class="fa-brands fa-squarespace fs-5"></i>
-                <a href="" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
 
-<nav>
-    <ul class="pagination">
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1"><i class="fa-solid fa-backward"></i> Trước</a>
-        </li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#"><i class="fa-solid fa-forward"></i> Sau</a>
-        </li>
-    </ul>
-</nav>
+    var _name = "ADMIN";
+    if (Session["user_id"] != null)
+    {
+        var _uid = int.Parse(Session["user_id"].ToString());
+        var data = new Web.Models.Context().TAIKHOANs.FirstOrDefault(x => x.matk == _uid);
+        if (data != null)
+        {
+            _name = data.hoten;
+        }
+    }
+}
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        font-family: 'Open Sans', Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 120%;
+    }
+
+    .page {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2em;
+        position: relative;
+        z-index: 1;
+    }
+
+    .loader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        display: flex;
+        align-items: stretch;
+        overflow: hidden;
+    }
+
+        .loader .stripe {
+            flex: 1;
+            background: #000;
+            transition: transform 0.8s ease;
+            transition-delay: 1.3s;
+        }
+
+            .loader .stripe:nth-child(2) {
+                transition-delay: 1.35s;
+            }
+
+            .loader .stripe:nth-child(3) {
+                transition-delay: 1.475s;
+            }
+
+            .loader .stripe:nth-child(4) {
+                transition-delay: 1.525s;
+            }
+
+        .loader .claim {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            font-size: 1.5em;
+            color: #fff;
+        }
+
+            .loader .claim span {
+                display: inline-block;
+                transform: translate3d(0, 150%, 0);
+                opacity: 0;
+                transition: transform 0.4s ease, opacity 0.4s ease;
+            }
+
+                .loader .claim span:nth-child(2) {
+                    transition-delay: 0.4s;
+                }
+
+                .loader .claim span:nth-child(3) {
+                    transition-delay: 0.8s;
+                }
+
+        .loader.loaded .stripe {
+            transform: translate3d(0, 100%, 0);
+        }
+
+        .loader.loaded .claim span {
+            transform: translate3d(0, 0%, 0);
+            opacity: 1;
+            animation: disappear 0.55s ease 1.2s forwards;
+        }
+
+            .loader.loaded .claim span:nth-child(2) {
+                animation-delay: 1.28s;
+            }
+
+            .loader.loaded .claim span:nth-child(3) {
+                animation-delay: 1.34s;
+            }
+
+        .loader.hidden {
+            display: none;
+        }
+
+    @@keyframes disappear {
+        to {
+            transform: translate3d(0, 150%, 0);
+            opacity: 0;
+        }
+    }
+</style>
+<style>
+    @@charset "UTF-8";
+    @@import url("https://fonts.googleapis.com/css?family=Poppins:900&display=swap");
+
+    h1 {
+        color: #FFFFFF;
+        font-family: "Poppins", sans-serif;
+        font-size: 80px;
+        font-weight: 900;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    ::-moz-selection {
+        background: black;
+    }
+
+    ::selection {
+        background: black;
+    }
+
+    /**
+    * * Main
+    * */
+    .page {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 0;
+        min-height: 100vh;
+        background-color: black;
+        background-image: url("https://images.unsplash.com/photo-1544077960-604201fe74bc?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1920&h=1080&fit=crop&ixid=eyJhcHBfaWQiOjF9");
+        background-position: center;
+        background-size: cover;
+        overflow: hidden;
+    }
+
+    /**
+    * * Decorative vignette
+    * */
+    .vignette {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: radial-gradient(rgba(0, 0, 0, 0), black);
+        pointer-events: none;
+        /*z-index: -1;*/
+        opacity: 1;
+        transition: opacity 350ms;
+    }
+
+    @@media screen and (max-width: 900px) {
+        .vignette {
+            opacity: 0.8;
+        }
+    }
+
+    /**
+    * * Decorative lines
+    * */
+    .lines {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        min-width: 960px;
+        border-right: 1px solid black;
+        border-left: 1px solid black;
+        pointer-events: none;
+    }
+
+        .lines__inner, .lines::before {
+            position: absolute;
+            top: 0;
+            left: 33%;
+            bottom: 0;
+            width: 33%;
+        }
+
+        .lines::before {
+            content: "";
+            border-right: 1px solid black;
+            border-left: 1px solid black;
+        }
+
+    .lines__inner {
+        box-shadow: 0 0 15px 5px black;
+        opacity: 0;
+    }
+    .restart {
+        position: fixed;
+        left: 50%;
+        bottom: 20px;
+        transform: translate(-50%, 0);
+        width: 30px;
+        height: 30px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'%3E%3Cpath fill='%23FFF' d='M133,440a35.37,35.37,0,0,1-17.5-4.67c-12-6.8-19.46-20-19.46-34.33V111c0-14.37,7.46-27.53,19.46-34.33a35.13,35.13,0,0,1,35.77.45L399.12,225.48a36,36,0,0,1,0,61L151.23,434.88A35.5,35.5,0,0,1,133,440Z'/%3E%3C/svg%3E") center/cover;
+        border: none;
+        outline: none;
+        opacity: 0.15;
+        cursor: pointer;
+        transition: opacity 300ms;
+    }
+
+        .restart:hover {
+            opacity: 1;
+        }
+    .b-example-divider {
+        background:black;
+    }
+    .container {
+        padding: 0 !important;
+    }
+    .f-text {
+        position:absolute;
+    }
+</style>
+
+<div class="loader">
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+    <div class="stripe"></div>
+
+    <div class="claim">
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+        <span></span>
+        <span></span>
+        <span>
+            WELCOME
+        </span>
+
+    </div>
+</div>
+
+<div class="page">
+    <p class="f-text">WELCOME @_name</p>
+    <main class="page" id="js-page">
+        <h1 data-svg>Xin chào @_name</h1>
+        <div class="lines">
+            <div class="lines__inner" id="js-lines"></div>
+        </div>
+        <div class="vignette"></div>
+        
+    </main>
+</div>
+
+<script>
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const loader = document.querySelector('.loader');
+            loader.classList += ' loaded';
+
+            setTimeout(() => {
+                loader.classList += ' hidden';
+            }, 2400);
+        }, 1000);
+    });
+
+    
+</script>
+<script src="~/Scripts/index.js"></script>

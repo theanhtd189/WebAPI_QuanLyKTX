@@ -84,7 +84,7 @@
     <main>
         <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <span class="fs-4"><i class="fa-solid fa-house-laptop"></i> Quản lý KTX</span>
+                <span class="fs-4"><i class="fa-solid fa-house-laptop" id="master-icon"></i> Quản lý KTX</span>
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
@@ -156,12 +156,12 @@
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=49ed3252c0b2ffb49cf8b508892e452d" alt="" width="32" height="32" class="rounded-circle me-2">
-                    @{ 
+                    @{
                         var _name = "ADMIN";
-                        if(Session["user_id"]!=null)
+                        if (Session["user_id"] != null)
                         {
                             var _uid = int.Parse(Session["user_id"].ToString());
-                            var data = new Web.Models.Context().TAIKHOANs.FirstOrDefault(x=>x.matk==_uid);
+                            var data = new Web.Models.Context().TAIKHOANs.FirstOrDefault(x => x.matk == _uid);
                             if (data != null)
                             {
                                 _name = data.hoten;
@@ -171,8 +171,8 @@
                     <strong>@_name</strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-@*                    <li><a class="dropdown-item" href="@Url.Action("","")">Thông tin tài khoản</a></li>
-*@                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="@Url.Action("","ThongTinTaiKhoan")">Thông tin tài khoản</a></li>
+                    <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="@Url.Action("","LogOut")">Đăng xuất</a></li>
                 </ul>
             </div>
@@ -183,8 +183,12 @@
         <div class="container px-4 py-3">
             @RenderBody()
 
-            @*   <p>page: @(ViewBag.CurrentPage!=null?ViewBag.CurrentPage:1)</p>
-                <p>total: @ViewBag.TotalPage</p>*@
+            @{
+                if (ViewBag.Msg != null)
+                {
+                    <p class="ViewBag-Msg"><i class="fa-solid fa-flag"></i> @ViewBag.Msg</p>
+                }
+            }
 
 
             @if (ViewBag.TotalPage != null && ViewBag.TotalPage > 1)
@@ -212,7 +216,7 @@
     </main>
 
 
-    
+
 
 
 </body>
@@ -260,13 +264,22 @@
         $("[e-type='create']").click(function () {
             $(this).attr('href',"/@_controller/Create/"+"@(ViewBag.Stt!=null?ViewBag.Stt==true? "?stt=True" : "?stt=False" : "")");
         })
-
-        $("")
     })
 </script>
 
-@if (ViewBag.Msg != null)
-{
-    var msg = HttpUtility.HtmlDecode(ViewBag.Msg);
-    <script>alert('@msg')</script>
+@{
+    if (_controller.ToLower() == "home" && _action.ToLower() == "index")
+    {
+        <script>
+            $(document).ready(function () {
+                $("#master-icon").addClass("bounce-in-fwd");
+            })
+            $(".nav-link>svg").each(function () {
+                $(this).addClass("swirl-in-fwd");
+            })
+            $(".nav-link").each(function () {
+                $(this).addClass("slide-in-blurred-left");
+            })
+        </script>
+    }
 }

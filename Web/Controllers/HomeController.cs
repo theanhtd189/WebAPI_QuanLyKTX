@@ -101,12 +101,59 @@ namespace Web.Controllers
             {
                 Session.Clear();               
             }
-
             return RedirectToAction("Index");
         }
 
         [Route("SignUp")]
         public ActionResult Signup() {
+            return View();
+        }
+
+        [CheckUserSession]
+        [HttpGet,Route("ThongTinTaiKhoan")]
+        public ActionResult ThongTinTaiKhoan()
+        {
+            var _id = int.Parse(Session["user_id"].ToString());
+            var e = db.TAIKHOANs.FirstOrDefault(x=>x.matk==_id);
+            if (e != null)
+            {
+                return View(e);
+            }
+            else
+            {
+                ViewBag.Msg = "Session không hợp lệ!";
+                return View("~/Shared/Error.cshtml");
+            }    
+        }
+
+        [CheckUserSession]
+        [HttpPost, Route("ThongTinTaiKhoan")]
+        public ActionResult ThongTinTaiKhoan(TAIKHOAN e)
+        {
+            if (e != null)
+            {
+                var o = db.TAIKHOANs.FirstOrDefault(x=>x.matk==e.matk);
+                if (e != null)
+                {
+                    if (e.hoten != o.hoten)
+                        o.hoten = e.hoten;
+                    if(o.email != e.email)
+                        o.email = e.email;
+                    if(!string.IsNullOrEmpty(e.pass) && o.pass != e.pass)
+                        o.pass = e.pass;
+                    if(o.cvu!=e.cvu)
+                        o.cvu = e.cvu;
+                    var stt = db.SaveChanges();
+                    if (stt > 0)
+                        ViewBag.Msg = "Lưu thành công!";
+                    else
+                        ViewBag.Msg = "Lỗi!";
+                }
+            }
+            else
+            {
+                ViewBag.Msg = "Tham số không hợp lệ";
+            }    
             return View();
         }
 

@@ -5,14 +5,14 @@
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h2>Details</h2>
+<h2 class="hi"><i class="fas fa-file-invoice"></i> Thông tin</h2>
 
 <div>
-    <h4>HOADON</h4>
+    <h4>Hóa đơn</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.PHONG.tenphong)
+            <i class="fa-solid fa-circle-info"></i> Tên phòng
         </dt>
 
         <dd>
@@ -20,7 +20,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ngaytao)
+            <i class="fa-solid fa-circle-info"></i> Thời gian lập hóa đơn
         </dt>
 
         <dd>
@@ -28,31 +28,31 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.tiendiennuoc)
+            <i class="fa-solid fa-circle-info"></i> Tiền điện nước
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.tiendiennuoc)
+            @Html.DisplayFor(model => model.tiendiennuoc) VND
         </dd>
 
+
+
         <dt>
-            @Html.DisplayNameFor(model => model.tongtien)
+            <i class="fa-solid fa-circle-info"></i> Tiền phòng
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tienphong) VND
+        </dd>
+        <dt>
+            <i class="fa-solid fa-circle-info"></i> Tổng tiền
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.tongtien)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.tienphong)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tienphong)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tenhs)
+            <i class="fa-solid fa-circle-info"></i> Học sinh nhận hóa đơn
         </dt>
 
         <dd>
@@ -60,24 +60,15 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.tennv)
+            <i class="fa-solid fa-circle-info"></i> Nhân viên lập hóa đơn
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.tennv)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.maphieudiennuoc)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.maphieudiennuoc)
-        </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.mahd }) |
     <i class="fa-regular fa-square-caret-left"></i> @Html.ActionLink("Quay lại", "Index")
 </p>
