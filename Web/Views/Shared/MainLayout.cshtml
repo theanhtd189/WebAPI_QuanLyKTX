@@ -156,11 +156,23 @@
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=49ed3252c0b2ffb49cf8b508892e452d" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong>mdo</strong>
+                    @{ 
+                        var _name = "ADMIN";
+                        if(Session["user_id"]!=null)
+                        {
+                            var _uid = int.Parse(Session["user_id"].ToString());
+                            var data = new Web.Models.Context().TAIKHOANs.FirstOrDefault(x=>x.matk==_uid);
+                            if (data != null)
+                            {
+                                _name = data.hoten;
+                            }
+                        }
+                    }
+                    <strong>@_name</strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="@Url.Action("","")">Thông tin tài khoản</a></li>
-                    <li><hr class="dropdown-divider"></li>
+@*                    <li><a class="dropdown-item" href="@Url.Action("","")">Thông tin tài khoản</a></li>
+*@                    <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="@Url.Action("","LogOut")">Đăng xuất</a></li>
                 </ul>
             </div>
