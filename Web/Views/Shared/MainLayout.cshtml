@@ -1,6 +1,7 @@
 ﻿@{
     string _controller = ViewContext.RouteData.Values["controller"].ToString();
     string _action = ViewContext.RouteData.Values["action"].ToString();
+    string link_img = "https://scontent.fhan14-1.fna.fbcdn.net/v/t39.30808-1/236804677_1512438842428396_5779047968545722804_n.jpg?stp=dst-jpg_s320x320&_nc_cat=102&ccb=1-6&_nc_sid=7206a8&_nc_ohc=j6SIBeCZOZUAX8JraHO&_nc_ht=scontent.fhan14-1.fna&oh=00_AT8FhKQbYyNK7lPCU-mNs-DYrFGLCs1Y1yjf5niFvOwr8g&oe=62888419";
 }
 <!doctype html>
 <html lang="en">
@@ -155,7 +156,7 @@
             <hr>
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=49ed3252c0b2ffb49cf8b508892e452d" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <img src="@link_img" alt="" width="32" height="32" class="rounded-circle me-2">
                     @{
                         var _name = "ADMIN";
                         if (Session["user_id"] != null)
