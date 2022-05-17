@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
+using Web.Middlewares;
 using Web.Models;
 
 namespace Web.Controllers
@@ -23,9 +24,13 @@ namespace Web.Controllers
         /// <param name="limit"></param>
         /// <param name="stt"></param>
         /// <returns></returns>
-        public ActionResult Index(int page = 1, int limit = 10, bool? stt=null) 
+        [CheckUserSession]
+        public ActionResult Index(int page = 1, int limit = 10, bool? stt=null,string msg="") 
         {
-
+            if (!string.IsNullOrEmpty(msg))
+            {
+                ViewBag.Msg = msg;
+            }         
             using (var client = new HttpClient())
             {
                 string _stt = "/in";
@@ -87,12 +92,18 @@ namespace Web.Controllers
                 }
             }
         }
-        public ActionResult Details(int? id, bool? stt = null)
+
+        [CheckUserSession]
+        public ActionResult Details(int? id, bool? stt = null, string call_back_url = "")
         {
             if (id != null)
             {
                 try
                 {
+                    if (!string.IsNullOrEmpty(call_back_url))
+                    {
+                        ViewBag.Back_Url = call_back_url;
+                    }
                     if (stt == null)
                     {
                         var e = db.HOCSINHs.FirstOrDefault(x => x.mahs == id);
@@ -124,6 +135,7 @@ namespace Web.Controllers
             }    
         }
 
+        [CheckUserSession]
         public ActionResult Create(bool? stt=null)
         {
             if(stt == null)
@@ -142,6 +154,93 @@ namespace Web.Controllers
             
         }
 
+        [CheckUserSession]
+        public ActionResult XepPhong(int? id)
+        {
+            if(id != null)
+            {
+                var o = db.HOCSINH_NEW.FirstOrDefault(x=>x.mahs==id);
+                if (o != null)
+                {
+                    var list_phong = db.PHONGs.Where(x=>x.HOCSINHs.Count<10).ToList();
+                    ViewBag.Hoc_Sinh = o;
+                    ViewBag.List_Phong = list_phong;
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Code = 404;
+                    ViewBag.Msg = "ID học sinh không tồn tại";
+                    return View("~/Views/Shared/Error.cshtml");
+                }    
+            }
+            else
+            {
+                return RedirectToAction("Index", new {stt=true});
+            }    
+        }
+
+        [CheckUserSession]
+        [HttpPost]
+        public ActionResult XepPhong(int mahs, int maphong)
+        {
+            var hs = db.HOCSINH_NEW.FirstOrDefault(x=>x.mahs==mahs);
+            var p = db.PHONGs.FirstOrDefault(x => x.maphong == maphong);
+            if (hs != null)
+            {
+                if(p != null)
+                {
+                    if (p.HOCSINHs.Count >= 10)
+                    {
+                        return RedirectToAction("Index",new {stt=true, msg="Phòng này đã đủ người!"});
+                    }
+                    else
+                    {
+                        var _in = new HOCSINH
+                        {
+                            maphong=maphong,
+                            hoten=hs.hoten,
+                            ngaysinh=hs.ngaysinh,
+                            gioitinh=hs.gioitinh,
+                            lop=hs.lop,
+                            ttphuhuynh=hs.ttphuhuynh,
+                            quequan=hs.quequan,
+                        };
+
+
+
+                        db.HOCSINHs.Add(_in);
+                        db.HOCSINH_NEW.Remove(hs);
+                        var stt = db.SaveChanges();
+                        var _msg = "";
+                        if (stt > 0)
+                        {
+                            
+                            _msg = "Xếp phòng thành công!";
+                        }
+                        else
+                        {
+                            _msg = "Lỗi!";
+                        }
+
+                        return RedirectToAction("Index", new { stt = true, msg = _msg });
+                    }    
+                }
+                else
+                {
+                    ViewBag.Msg = "ID phòng không tồn tại";
+                    ViewBag.Code = 404;
+                    return View("~/Views/Shared/Error.cshtml");
+                }    
+            }
+            else
+            {
+                ViewBag.Msg = "ID học sinh không tồn tại";
+                ViewBag.Code = 404;
+                return View("~/Views/Shared/Error.cshtml");
+            }    
+            
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -199,6 +298,7 @@ namespace Web.Controllers
             }
         }
 
+        [CheckUserSession]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateOld(HOCSINH_OLD e)
@@ -227,6 +327,7 @@ namespace Web.Controllers
             }
         }
 
+        [CheckUserSession]
         [HttpGet]
         public ActionResult Edit(int? id, bool? stt=null)
         {
@@ -365,6 +466,7 @@ namespace Web.Controllers
             }
         }
 
+        [CheckUserSession]
         [HttpGet]
         public ActionResult Delete(int? id, bool? stt=null)
         {

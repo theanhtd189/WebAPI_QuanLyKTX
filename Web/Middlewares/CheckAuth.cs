@@ -9,19 +9,22 @@ using System.Web.Routing;
 
 namespace Web.Middlewares
 {
-    public class LogAttribute : ActionFilterAttribute, IAuthenticationFilter
+    public class CheckLoginAttribute : ActionFilterAttribute
     {
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
+       /* public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             Log("OnActionExecuted", filterContext.RouteData);
-        }
+        }*/
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            Log("OnActionExecuting", filterContext.RouteData);
+            if (string.IsNullOrEmpty(Convert.ToString(filterContext.HttpContext.Session["user_id"])))
+            {
+                filterContext.HttpContext.Response.Redirect("/Login", true);
+            }
         }
 
-        public override void OnResultExecuted(ResultExecutedContext filterContext)
+       /* public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
             Log("OnResultExecuted", filterContext.RouteData);
         }
@@ -29,16 +32,12 @@ namespace Web.Middlewares
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
             Log("OnResultExecuting ", filterContext.RouteData);
-        }
+        }*/
 
-        private void Log(string methodName, RouteData routeData)
-        {
-          
-        }
 
-        public void OnAuthentication(AuthenticationContext filterContext)
+        /*public void OnAuthentication(AuthenticationContext filterContext)
         {
-            if (string.IsNullOrEmpty(Convert.ToString(filterContext.HttpContext.Session["UID"])))
+            if (string.IsNullOrEmpty(Convert.ToString(filterContext.HttpContext.Session["user_id"])))
             {
                 filterContext.Result = new HttpUnauthorizedResult();
             }
@@ -50,10 +49,9 @@ namespace Web.Middlewares
                 filterContext.Result = new RedirectToRouteResult(
                 new RouteValueDictionary
                 {
-                     { "controller", "Account" },
-                     { "action", "Login" }
+                     { "controller", "Login" },
                 });
             }
-        }
+        }*/
     }
 }

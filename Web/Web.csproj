@@ -187,6 +187,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Middlewares\CheckAuth.cs" />
+    <Compile Include="Middlewares\CheckUserSession.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\GIA_DIENNUOC.cs" />
     <Compile Include="Models\HOADON.cs" />
@@ -214,6 +215,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\bg_login.jpg" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -290,6 +292,9 @@
     <Content Include="Views\HocSinh\Edit_OLD.cshtml" />
     <Content Include="Views\HocSinh\Detail_OLD.cshtml" />
     <Content Include="Views\HocSinh\Detail_NEW.cshtml" />
+    <Content Include="Views\HocSinh\XepPhong.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\Signup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

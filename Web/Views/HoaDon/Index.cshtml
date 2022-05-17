@@ -6,14 +6,11 @@
 }
 
 <h2 class="display-6 text-capitalize lb-page">Danh sách hóa đơn </h2>
-<a class="btn mb-2 btn-outline-primary add-new" e-type="create" href="#">Tạo hóa đơn mới</a>
+<a class="btn mb-2 btn-outline-primary add-new" e-type="create" href="#"><i class="fa-solid fa-plus"></i> Tạo hóa đơn mới</a>
 <table class="table table-striped table-dark">
     <thead>
         <tr>
             <th scope="col">STT</th>
-            <th scope="col">
-                Mã hóa đơn
-            </th>
             <th scope="col">
                 Phòng
             </th>
@@ -32,9 +29,6 @@
         <tr>
             <td>
                 @(Stt++)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.mahd)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PHONG.tenphong)

@@ -1,73 +1,90 @@
 ﻿@model Web.Models.HOADON
 @using Web.Models;
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Thêm mới";
     Layout = "~/Views/Shared/MainLayout.cshtml";
     var db = new Context();
     var list_phong = db.PHONGs;
     var list_hd = db.PHIEU_DIENNUOC.ToList();
 }
 
-<h2>Create</h2>
+<h2><i class="fas fa-file-invoice"></i> Thông tin</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>HOADON</h4>
+    <h4>Hóa đơn</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
     <div class="form-group">
-        <label class="control-label col-md-2" for="maphong">Phòng nhận hóa đơn</label>
-        @if (list_phong != null && list_phong.ToList().Count > 0)
-        {
-            <select id="maphong" name="maphong">
-                @foreach (var i in list_phong.ToList())
-                {
-                    <option value="@i.maphong">@list_phong.FirstOrDefault(x => x.maphong == i.maphong).tenphong</option>
-                }
-            </select>
-        }
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ngaytao, htmlAttributes: new { @class = "control-label col-md-2"})
+        @Html.LabelFor(model => model.ngaytao, "Ngày tạo phiếu", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.ngaytao, new { htmlAttributes = new { @class = "form-control", Value = DateTime.Now } })
+            @Html.EditorFor(model => model.ngaytao, new { htmlAttributes = new { @class = "form-control", Value = DateTime.Now, @Readonly = "true" } })
             @Html.ValidationMessageFor(model => model.ngaytao, "", new { @class = "text-danger" })
         </div>
     </div>
 
+    <div class="form-group">
+        <div class="col-md-10">
+            <label class="control-label col-md-2" for="maphong">Phòng nhận hóa đơn</label>
+            @if (list_phong != null && list_phong.ToList().Count > 0)
+            {
+                <select id="maphong" name="maphong">
+                    @foreach (var i in list_phong.ToList())
+                    {
+                        <option value="@i.maphong">@list_phong.FirstOrDefault(x => x.maphong == i.maphong).tenphong</option>
+                    }
+                </select>
+            }
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <label class="control-label col-md-2" for="maphieudiennuoc">Phiếu điện nước</label>
+            @if (list_hd != null && list_hd.Count > 0)
+            {
+                <select id="maphieudiennuoc" name="maphieudiennuoc">
+                    @foreach (var i in list_hd)
+                    {
+                        var ma = i.maphieu + i.ngaytaophieu.Value.ToString("ddMyyyy");
+                        <option value="@i.maphieu" e-value="@i.tongtien">Mã phiếu: @ma -  @i.PHONG.tenphong -  @i.ngaytaophieu.Value.ToString("HH") giờ @i.ngaytaophieu.Value.ToString("mm") phút ngày @i.ngaytaophieu.Value.ToString("dd") tháng @i.ngaytaophieu.Value.ToString("MM")</option>
+                    }
+                </select>
+            }
+        </div>
+    </div>
+
 
 
     <div class="form-group">
-        @Html.LabelFor(model => model.tiendiennuoc, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.tiendiennuoc, "Tiền điện - nước", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.tiendiennuoc, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.tiendiennuoc, new { htmlAttributes = new { @class = "form-control", @Readonly = "true" } })
             @Html.ValidationMessageFor(model => model.tiendiennuoc, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.tongtien, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.tongtien, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.tongtien, "", new { @class = "text-danger" })
-        </div>
-    </div>
+
 
     <div class="form-group">
-        @Html.LabelFor(model => model.tienphong, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.tienphong, "Tiền phòng", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.tienphong, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.tienphong, "", new { @class = "text-danger" })
         </div>
     </div>
-
     <div class="form-group">
-        @Html.LabelFor(model => model.tenhs, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.tongtien, "Tổng tiền", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.tongtien, new { htmlAttributes = new { @class = "form-control", @Readonly = "true" } })
+            @Html.ValidationMessageFor(model => model.tongtien, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.tenhs, "Học sinh nhận phiếu", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.tenhs, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.tenhs, "", new { @class = "text-danger" })
@@ -75,25 +92,14 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.tennv, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.tennv, "Tên nhân viên", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.tennv, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.tennv, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2" for="maphieudiennuoc">Phiếu điện nước</label>
-        @if (list_hd != null && list_hd.Count > 0)
-        {
-            <select id="maphong" name="maphong">
-                @foreach (var i in list_hd)
-                {
-                <option value="@i.maphieu">Mã phiếu: HDD@(i.maphieu) -  @i.PHONG.tenphong - ngày @i.ngaytaophieu.Value.ToString("dd") tháng @i.ngaytaophieu.Value.ToString("MM")</option>
-                }
-            </select>
-        }
-    </div>
+
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
@@ -104,5 +110,32 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <i class="fa-regular fa-square-caret-left"></i> @Html.ActionLink("Quay lại", "Index")
 </div>
+
+<script>
+    $(document).ready(function () {
+        var TinhTien = function () {
+            var Tong = $("#tongtien")
+            var d = Number($("#tiendiennuoc").val());
+            var p = Number($("#tienphong").val());
+            console.log('dien',d ,'phong',p)
+            Tong.val(d + p)
+        }
+
+        $("#maphieudiennuoc").change(function () {
+            var _vl = $("#maphieudiennuoc option:selected").attr('e-value');
+            console.log(_vl)
+            $("#tiendiennuoc").val(_vl)
+            TinhTien();
+        })
+
+        $("#tienphong").change(function () {
+            if ($(this).val() < 0 || isNaN($(this).val())) {
+                alert("Giá trị không hợp lệ");
+                $(this).val('0')
+            }
+            TinhTien();
+        })
+    })
+</script>

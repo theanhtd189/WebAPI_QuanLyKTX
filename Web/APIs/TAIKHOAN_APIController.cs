@@ -35,6 +35,12 @@ namespace Web.APIs
             return result;
         }
 
+        [Route("getaccount")]
+        public TAIKHOAN GetTaiKhoan(string email, string password)
+        {
+            return db.TAIKHOANs.FirstOrDefault(x=>x.email==email&&x.pass==password);
+        }
+
         [Route("get/{id}")]
         public TAIKHOAN GetSingle(int id)
         {

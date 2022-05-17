@@ -1,24 +1,24 @@
 ﻿@model Web.Models.VATTU
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Sửa thông tin";
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2><i class="fas fa-ribbon"></i> Thông tin</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>VATTU</h4>
+        <h4>Vật tư: </h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.mavt)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.tenvattu, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.tenvattu,"Tên vật tư", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.tenvattu, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.tenvattu, "", new { @class = "text-danger" })
@@ -26,7 +26,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.soluong, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.soluong,"Số lượng", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.soluong, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.soluong, "", new { @class = "text-danger" })
@@ -34,7 +34,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.giatien, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.giatien,"Đơn giá", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.giatien, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.giatien, "", new { @class = "text-danger" })
@@ -50,5 +50,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <i class="fa-regular fa-square-caret-left"></i> @Html.ActionLink("Quay lại", "Index")
 </div>

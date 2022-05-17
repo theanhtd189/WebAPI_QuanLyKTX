@@ -1,51 +1,42 @@
 ﻿@model Web.Models.PHONG
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Thông tin phòng";
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h2>Details</h2>
+
+<h2><i class="fa-solid fa-house-chimney"></i> Thông tin </h2>
 
 <div>
-    <h4>PHONG</h4>
+    <h4>@Model.tenphong</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.tenphong)
+            <i class="fa-solid fa-circle-info"></i> Số giường: @Html.DisplayFor(model => model.tsogiuong)
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tenphong)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.tsogiuong)
+            <i class="fa-solid fa-circle-info"></i> Tầng: @Html.DisplayFor(model => model.tang)
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tsogiuong)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.tang)
+            <i class="fa-solid fa-circle-info"></i> Số người: @Html.DisplayFor(model => model.HOCSINHs.Count)
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tang)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tinhtrang)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tinhtrang)
-        </dd>
-
     </dl>
 </div>
+@if (Model.HOCSINHs.Count > 0)
+{
+<div class="row sample-row">
+    @foreach (var item in Model.HOCSINHs.ToList())
+    {
+        <a href="@Url.Action("Details","HocSinh", new {id=item.mahs, call_back_url=Request.Url.ToString()})" class="col-xs-12 col-sm-6 col-md-3 gutter-margin-xs-sm gutter-margin-sm-md">
+            <div class="inner"><i class="fa-regular fa-circle-user"></i> @item.hoten</div>
+        </a>
+    }
+</div>
+}
+
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.maphong }) |
-    @Html.ActionLink("Back to List", "Index")
+    <i class="fa-regular fa-square-caret-left"></i> 
+    @Html.ActionLink("Quay lại", "Index")
 </p>

@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Chọn phòng";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    var hs = (Web.Models.HOCSINH_NEW)ViewBag.Hoc_Sinh;
+    var list = (List<Web.Models.PHONG>)ViewBag.List_Phong;
+}
+
+<h2><i class="fa-solid fa-house-chimney"></i> Chọn phòng</h2>
+
+@using (Html.BeginForm("XepPhong","HocSinh", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>@hs.hoten</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+   
+
+    <input type="hidden" value="@hs.mahs" name="mahs"/>
+
+
+    @{
+        <div class="form-group">
+            @if (list != null && list.Count > 0)
+            {
+                <select id="maphong" name="maphong">
+                    @foreach (var i in list)
+                    {
+                        <option value="@i.maphong">@i.tenphong (@i.HOCSINHs.Count người)</option>
+                    }tenphon
+                </select>
+            }
+        </div>
+    }
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    <i class="fa-regular fa-square-caret-left"></i>
+    @Html.ActionLink("Quay lại", "Index", new { stt = true })
+</div>

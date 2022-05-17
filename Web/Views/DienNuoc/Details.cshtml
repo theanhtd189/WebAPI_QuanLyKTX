@@ -1,75 +1,45 @@
 ﻿@model Web.Models.PHIEU_DIENNUOC
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Thông tin chi tiết";
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h2>Details</h2>
+<h2><i class="fa-solid fa-money-check"></i> Thông tin</h2>
 
 <div>
-    <h4>PHIEU_DIENNUOC</h4>
+    <h4>Phiếu điện nước: #@Model.maphieu-@Model.ngaytaophieu.Value.ToString("ddMyyyy")</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.PHONG.tenphong)
+            <i class="fa-solid fa-circle-info"></i> Tên phòng: @Html.DisplayFor(model => model.PHONG.tenphong)
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.PHONG.tenphong)
-        </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ngaytaophieu)
+            <i class="fa-solid fa-circle-info"></i> Ngày tạo: @Model.ngaytaophieu.Value.ToString("dd/MM/yyyy")
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ngaytaophieu)
-        </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.sodien)
+            <i class="fa-solid fa-circle-info"></i> Giá điện: @Model.giadien VND
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.sodien)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.sonuoc)
+            <i class="fa-solid fa-circle-info"></i> Số điện điện: @Model.sodien số
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.sonuoc)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.giadien)
+            <i class="fa-solid fa-circle-info"></i> Giá nước: @Model.gianuoc VND
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.giadien)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.gianuoc)
+            <i class="fa-solid fa-circle-info"></i> Số nước: @Model.sonuoc khối
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.gianuoc)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.tongtien)
+            <i class="fa-solid fa-circle-info"></i> Tổng tiền: @Model.tongtien VND
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.tongtien)
-        </dd>
+
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.maphieu }) |
-    @Html.ActionLink("Back to List", "Index")
+    <i class="fa-regular fa-square-caret-left"></i> @Html.ActionLink("Quay lại", "Index")
 </p>

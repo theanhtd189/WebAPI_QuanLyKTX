@@ -1,75 +1,56 @@
 ﻿@model Web.Models.HOCSINH
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Chi tiết";
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h2>Details</h2>
+<h2><i class="fa-solid fa-person-circle-exclamation"></i> Thông tin</h2>
 
 <div>
-    <h4>HOCSINH</h4>
+    <h4>@Model.hoten</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.PHONG.tenphong)
+            <i class="fa-solid fa-circle-info"></i>
+            Họ tên:
+            @Model.hoten
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PHONG.tenphong)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.hoten)
+            <i class="fa-solid fa-circle-info"></i>
+            Ngày sinh
+            @Model.ngaysinh.Value.ToString("dd/MM/yyyy")
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.hoten)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.ngaysinh)
+            <i class="fa-solid fa-circle-info"></i>
+            Giới tính:
+            @(Model.gioitinh==true?"Nam":"Nữ")
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ngaysinh)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.quequan)
+            <i class="fa-solid fa-circle-info"></i>
+            Lớp:
+            @Model.lop
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.quequan)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.gioitinh)
+            <i class="fa-solid fa-circle-info"></i>
+            Quê quán:
+            @Model.quequan
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.gioitinh)
-        </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.ttphuhuynh)
+            <i class="fa-solid fa-circle-info"></i>
+            Thông tin phụ huynh:
+            @Model.ttphuhuynh
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ttphuhuynh)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.lop)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.lop)
-        </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.mahs }) |
-    @Html.ActionLink("Back to List", "Index")
+    @{
+        string _link = Url.Action("Index");
+        if (ViewBag.Back_Url != null)
+        {
+            _link = ViewBag.Back_Url;
+        }
+    }
+    <i class="fa-regular fa-square-caret-left"></i> <a href="@_link">Quay lại</a>
 </p>

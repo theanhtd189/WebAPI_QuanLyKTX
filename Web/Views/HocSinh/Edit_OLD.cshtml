@@ -1,24 +1,25 @@
 ﻿@model Web.Models.HOCSINH_OLD
-
+@using Web.Models;
 @{
-    ViewBag.Title = "Edit_OLD";
+    ViewBag.Title = "Sửa thông tin";
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h2>Edit_OLD</h2>
+<h2><i class="fa-solid fa-person-circle-exclamation"></i> Thông tin</h2>
 
-@using (Html.BeginForm("EditOld","HocSinh"))
+@using (Html.BeginForm("EditOld", "HocSinh"))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>HOCSINH_OLD</h4>
+        <h4>@Model.hoten</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.mahs)
 
+
         <div class="form-group">
-            @Html.LabelFor(model => model.hoten, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.hoten, "Họ và tên", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.hoten, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.hoten, "", new { @class = "text-danger" })
@@ -26,7 +27,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ngaysinh, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ngaysinh, "Ngày sinh", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.ngaysinh, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ngaysinh, "", new { @class = "text-danger" })
@@ -34,7 +35,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.quequan, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.quequan, "Quê quán", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.quequan, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.quequan, "", new { @class = "text-danger" })
@@ -42,17 +43,19 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.gioitinh, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.gioitinh, "Giới tính", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.gioitinh)
-                    @Html.ValidationMessageFor(model => model.gioitinh, "", new { @class = "text-danger" })
+                    <select class="list-box tri-state" id="gioitinh" name="gioitinh">
+                        <option value="true" @(Model.gioitinh == true ? "selected" : "")>Nam</option>
+                        <option value="false" @(Model.gioitinh == false ? "selected" : "")>Nữ</option>
+                    </select>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ttphuhuynh, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ttphuhuynh, "Phụ huynh", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.ttphuhuynh, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ttphuhuynh, "", new { @class = "text-danger" })
@@ -60,7 +63,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.lop, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.lop, "Lớp", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.lop, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.lop, "", new { @class = "text-danger" })
@@ -76,5 +79,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <i class="fa-regular fa-square-caret-left"></i> @Html.ActionLink("Quay lại", "Index",new {stt=false})
 </div>

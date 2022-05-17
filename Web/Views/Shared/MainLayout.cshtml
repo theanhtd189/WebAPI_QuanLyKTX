@@ -10,10 +10,15 @@
     <title>@(ViewBag.Title!=null?ViewBag.Title:"Quản lý KTX")</title>
     <link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="icon" href="favicons/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="icon" href="~/Images/icon.jpg" />
     <link href="~/Content/animations.css" rel="stylesheet" />
     <link href="~/Content/sidebars.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
 </head>
 <body>
 
@@ -103,7 +108,7 @@
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="@Url.Action("","HocSinh")" class="link-dark rounded">Học sinh đã có phòng</a></li>
                             <li><a href="@Url.Action("","HocSinh", new {stt=true})" class="link-dark rounded">Học sinh chưa xếp phòng</a></li>
-                            <li><a href="@Url.Action("","HocSinh", new {stt=false})" class="link-dark rounded">Học sinh đã rời phòng</a></li>
+                            <li><a href="@Url.Action("","HocSinh", new {stt=false})" class="link-dark rounded">Học sinh đã xóa</a></li>
                         </ul>
                     </div>
                 </li>
@@ -115,7 +120,6 @@
                     <div class="collapse" id="t3">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="@Url.Action("","DienNuoc")" class="link-dark rounded">Danh sách phiếu</a></li>
-                            <li><a href="#" class="link-dark rounded">Thêm phiếu</a></li>
                         </ul>
                     </div>
                 </li>
@@ -127,7 +131,6 @@
                     <div class="collapse" id="t4">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="@Url.Action("","VatTu")" class="link-dark rounded">Danh sách vật tư</a></li>
-                            <li><a href="@Url.Action("QuanLy","VatTu")" class="link-dark rounded">Quản lý vật tư các phòng</a></li>
                         </ul>
                     </div>
                 </li>
@@ -139,7 +142,6 @@
                     <div class="collapse" id="t5">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="@Url.Action("","HoaDon")" class="link-dark rounded">Danh sách hóa đơn</a></li>
-                            <li><a href="#" class="link-dark rounded">Thêm hóa đơn</a></li>
                         </ul>
                     </div>
                 </li>
@@ -153,15 +155,13 @@
             <hr>
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <img src="https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=49ed3252c0b2ffb49cf8b508892e452d" alt="" width="32" height="32" class="rounded-circle me-2">
                     <strong>mdo</strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("","")">Thông tin tài khoản</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("","LogOut")">Đăng xuất</a></li>
                 </ul>
             </div>
         </div>
@@ -171,8 +171,8 @@
         <div class="container px-4 py-3">
             @RenderBody()
 
-         @*   <p>page: @(ViewBag.CurrentPage!=null?ViewBag.CurrentPage:1)</p>
-            <p>total: @ViewBag.TotalPage</p>*@
+            @*   <p>page: @(ViewBag.CurrentPage!=null?ViewBag.CurrentPage:1)</p>
+                <p>total: @ViewBag.TotalPage</p>*@
 
 
             @if (ViewBag.TotalPage != null && ViewBag.TotalPage > 1)
@@ -199,10 +199,8 @@
 
     </main>
 
-    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
+    
 
 
 </body>
@@ -250,10 +248,13 @@
         $("[e-type='create']").click(function () {
             $(this).attr('href',"/@_controller/Create/"+"@(ViewBag.Stt!=null?ViewBag.Stt==true? "?stt=True" : "?stt=False" : "")");
         })
+
+        $("")
     })
 </script>
 
 @if (ViewBag.Msg != null)
 {
-    <script>alert("@ViewBag.Msg")</script>
+    var msg = HttpUtility.HtmlDecode(ViewBag.Msg);
+    <script>alert('@msg')</script>
 }

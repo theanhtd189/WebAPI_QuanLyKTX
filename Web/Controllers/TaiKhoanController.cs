@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
+using Web.Middlewares;
 using Web.Models;
 
 namespace Web.Controllers
@@ -15,6 +16,7 @@ namespace Web.Controllers
     {
         private Context db = new Context();
 
+        [CheckUserSession]
         public ActionResult Index(int page = 1, int limit = 10, string msg="")
         {
             using (var client = new HttpClient())
@@ -57,6 +59,7 @@ namespace Web.Controllers
             }
         }
 
+        [CheckUserSession]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -71,11 +74,11 @@ namespace Web.Controllers
             return View(tAIKHOAN);
         }
 
+        [CheckUserSession]
         public ActionResult Create()
         {
             return View();
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -105,7 +108,7 @@ namespace Web.Controllers
             }
         }
 
-       
+        [CheckUserSession]
         [HttpGet]
         public ActionResult Edit(int? id)
         {
@@ -135,7 +138,6 @@ namespace Web.Controllers
             }
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "matk,hoten,email,pass,cvu")] TAIKHOAN e)
@@ -162,7 +164,7 @@ namespace Web.Controllers
             }
         }
 
-
+        [CheckUserSession]
         [HttpGet]
         public ActionResult Delete(int? id)
         {
@@ -188,15 +190,6 @@ namespace Web.Controllers
                 }
             }
 
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

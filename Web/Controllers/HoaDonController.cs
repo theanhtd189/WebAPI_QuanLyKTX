@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
+using Web.Middlewares;
 using Web.Models;
 
 namespace Web.Controllers
@@ -16,6 +17,7 @@ namespace Web.Controllers
         private Context db = new Context();
 
         // GET: HoaDon
+        [CheckUserSession]
         public ActionResult Index(int page = 1, int limit = 10)
         {
 
@@ -56,6 +58,7 @@ namespace Web.Controllers
         }
 
         // GET: HoaDon/Details/5
+        [CheckUserSession]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -70,6 +73,7 @@ namespace Web.Controllers
             return View(e);
         }
 
+        [CheckUserSession]
         public ActionResult Create()
         {
             return View();
@@ -104,7 +108,7 @@ namespace Web.Controllers
             }
         }
 
-
+        [CheckUserSession]
         [HttpGet]
         public ActionResult Edit(int? id)
         {
@@ -161,7 +165,7 @@ namespace Web.Controllers
             }
         }
 
-
+        [CheckUserSession]
         [HttpGet]
         public ActionResult Delete(int? id)
         {

@@ -261,6 +261,16 @@ namespace Web.APIs
                 return NotFound();
             }
 
+            var _in = new HOCSINH_OLD
+            {
+                hoten = e.hoten,
+                ngaysinh = e.ngaysinh,
+                gioitinh = e.gioitinh,
+                lop = e.lop,
+                ttphuhuynh = e.ttphuhuynh,
+                quequan = e.quequan,
+            };
+            db.HOCSINH_OLD.Add(_in);
             db.HOCSINHs.Remove(e);
             db.SaveChanges();
 
@@ -276,6 +286,17 @@ namespace Web.APIs
             {
                 return NotFound();
             }
+
+            var _in = new HOCSINH_OLD
+            {
+                hoten = e.hoten,
+                ngaysinh = e.ngaysinh,
+                gioitinh = e.gioitinh,
+                lop = e.lop,
+                ttphuhuynh = e.ttphuhuynh,
+                quequan = e.quequan,
+            };
+            db.HOCSINH_OLD.Add(_in);
 
             db.HOCSINH_NEW.Remove(e);
             db.SaveChanges();

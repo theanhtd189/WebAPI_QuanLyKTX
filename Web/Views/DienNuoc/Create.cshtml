@@ -1,92 +1,126 @@
 ﻿@model Web.Models.PHIEU_DIENNUOC
-@using Web.Models
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Thêm phiếu";
     Layout = "~/Views/Shared/MainLayout.cshtml";
-    var db = new Context();
-    var list_phong = db.PHONGs;
+
 }
 
-<h2>Create</h2>
 
-@using (Html.BeginForm()) 
+<h2><i class="fa-solid fa-money-check"></i> Thông tin</h2>
+
+@{
+    var db = new Web.Models.Context();
+    var list_phong = db.PHONGs;
+}
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>PHIEU_DIENNUOC</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        <label class="control-label col-md-2" for="maphong">Phòng nhận hóa đơn</label>
-        @if (list_phong != null && list_phong.ToList().Count > 0)
-        {
-            <select id="maphong" name="maphong" class="control-label col-md-2">
-                @foreach (var i in list_phong.ToList())
+    <div class="form-horizontal">
+        <h4>Phiếu điện nước: </h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.maphieu)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ngaytaophieu, "Ngày tạo phiếu", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ngaytaophieu, new { htmlAttributes = new { @class = "form-control", Value=DateTime.Now, @Readonly="true" } })
+                @Html.ValidationMessageFor(model => model.ngaytaophieu, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label class="control-label col-md-2" for="maphong">Phòng nhận hóa đơn</label>
+                @if (list_phong != null && list_phong.ToList().Count > 0)
                 {
-                    <option value="@i.maphong">@list_phong.FirstOrDefault(x => x.maphong == i.maphong).tenphong</option>
+                    <select id="maphong" name="maphong">
+                        @foreach (var i in list_phong.ToList())
+                        {
+                            <option value="@i.maphong">@i.tenphong</option>
+                        }
+                    </select>
                 }
-            </select>
-        }
-    </div>
+            </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.ngaytaophieu, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ngaytaophieu, new { htmlAttributes = new { @class = "form-control", Value=DateTime.Now } })
-            @Html.ValidationMessageFor(model => model.ngaytaophieu, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sodien, "Số điện", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.sodien, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.sodien, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.giadien, "Giá điện (VND/kWh)", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.giadien, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.giadien, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.sonuoc, "Số nước", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.sonuoc, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.sonuoc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.gianuoc, "Giá nước (VND/M^3)", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.gianuoc, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.gianuoc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.tongtien, "Tổng tiền (VND)", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.tongtien, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                @Html.ValidationMessageFor(model => model.tongtien, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.sodien, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.sodien, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.sodien, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.sonuoc, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.sonuoc, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.sonuoc, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.giadien, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.giadien, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.giadien, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.gianuoc, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.gianuoc, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.gianuoc, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.tongtien, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.tongtien, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.tongtien, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <i class="fa-regular fa-square-caret-left"></i> @Html.ActionLink("Quay lại", "Index")
 </div>
+
+<script>
+    $(document).ready(function () {
+        var intRegex = /^\d+$/;
+        var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
+
+
+        $("input").change(function () {
+
+            var TinhTien = function () {
+                var sodien = $("#sodien").val()
+                var sonuoc = $("#sonuoc").val()
+                var giadien = $("#giadien").val()
+                var gianuoc = $("#gianuoc").val()
+                var tongtien = $("#tongtien")
+
+                var _vl = sodien * giadien + sonuoc * gianuoc;
+                tongtien.attr('value', _vl)
+
+            }
+            var v = $(this);
+            var lb = (v.parent().prev().text());
+            if (v.val() <= 0) {
+                alert(lb + " không hợp lệ !");
+                v.val(1);
+            }
+            TinhTien();
+
+        })
+    })
+</script>

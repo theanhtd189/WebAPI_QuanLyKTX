@@ -7,7 +7,12 @@
 
 
 <h2 class="display-6 text-capitalize lb-page">Danh sách các học sinh @(ViewBag.Stt!=null?ViewBag.Stt==true?"chưa được xếp phòng":"đã xóa khỏi phòng":"đã được xếp phòng")</h2>
-<a class="btn mb-2 btn-outline-primary add-new" e-type="create" href="#">Thêm mới</a>
+@{
+    if (ViewBag.Stt!= null && ViewBag.Stt == true)
+    {
+        <a class="btn mb-2 btn-outline-primary add-new" e-type="create" href="#"><i class="fa-solid fa-plus"></i> Thêm mới</a>
+    }
+}
 <table class="table table-striped table-dark text-capitalize">
     <thead>
         <tr>
@@ -27,39 +32,54 @@
             <th scope="col">
                 Lớp
             </th>
+            @if (ViewBag.Stt == null)
+            {
+                <th scope="col">
+                    Phòng
+                </th>
+            }
             <th scope="col">Hành động</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @(Stt++)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.hoten)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ngaysinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.quequan)
-            </td>
-            <td>
-                @(item.gioitinh==true? "Nam":"Nữ")
-            </td>
-            <td>
-                @Html.DisplayFor(m => item.lop)
-            </td>
-            <td>
-                <a e-id="@item.mahs" e-type="detail" class="btn bg-primary text-white"><i class="fa-solid fa-calendar-week"></i> Chi tiết</a>
-                <i class="fa-brands fa-squarespace fs-5"></i>
-                <a e-id="@item.mahs" e-type="edit" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-                <i class="fa-brands fa-squarespace fs-5"></i>
-                <a e-id="@item.mahs" e-type="delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @(Stt++)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.hoten)
+                </td>
+                <td>
+                    @item.ngaysinh.Value.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.quequan)
+                </td>
+                <td>
+                    @(item.gioitinh==true? "Nam":"Nữ")
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.lop)
+                </td>
+                @if (ViewBag.Stt == null)
+                {
+                    <td>
+                        @item.PHONG.tenphong
+                    </td>
+                }
+                <td>
+                    @if (ViewBag.Stt == true)
+                    {
+                        <a e-id="@item.mahs" e-type="set" href="@Url.Action("XepPhong", new { id=item.mahs})" class="btn bg-primary text-white"><i class="fa-solid fa-person-shelter"></i> Xếp phòng</a>
+                        <i class="fa-brands fa-squarespace fs-5"></i>
+                    }
+                    <a e-id="@item.mahs" e-type="edit" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
+                    <i class="fa-brands fa-squarespace fs-5"></i>
+                    <a e-id="@item.mahs" e-type="delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
