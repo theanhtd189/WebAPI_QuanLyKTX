@@ -14,6 +14,16 @@ namespace Web.Controllers
     {
         // GET: Vattu
         private Context db = new Context();
+        public ActionResult theanh(string timkiem)
+        {
+            if (!String.IsNullOrEmpty(timkiem))
+            {
+                var ketqua = db.VATTUs.Where(x => x.tenvattu.Contains(timkiem)).ToList();
+                return View("timkiem", ketqua);
+            }
+            else
+                return RedirectToAction("Index");
+        }
 
         [CheckUserSession]
         public ActionResult index(int page = 1, int limit = 10)

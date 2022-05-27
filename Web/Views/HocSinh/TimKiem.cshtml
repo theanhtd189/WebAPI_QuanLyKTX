@@ -1,25 +1,19 @@
-﻿@model IEnumerable<Web.Models.HOCSINH>
+﻿@model IEnumerable<Web.Models.HOCSINH_NEW>
 @{
     ViewBag.Title = "Danh sách học sinh";
     Layout = "~/Views/Shared/MainLayout.cshtml";
-    int Stt = ViewBag.I;
+    int Stt = 1;
 }
 
 
-<h2 class="display-6 text-capitalize lb-page">Danh sách các học sinh @(ViewBag.Stt!=null?ViewBag.Stt==true?"chưa được xếp phòng":"đã xóa khỏi phòng":"đã được xếp phòng")</h2>
-@{
-    if (ViewBag.Stt!= null && ViewBag.Stt == true)
-    {
-        <a class="btn mb-2 add-new" e-type="create" href="#" style="background-color: rgb(154, 192, 173)"><i class="fa-solid fa-plus"></i> Thêm mới</a>
-    }
-}
+<h2 class="display-6 text-capitalize lb-page">Danh sách kết quả tìm kiếm</h2>
 
 <form action="/hocsinh/theanh" method="get">
-    <input type="text" name="timkiem" required/>
+    <input type="text" name="timkiem" required />
     <button type="submit">Tìm kiếm</button>
 </form>
 <br />
-<table class="table table-striped  text-capitalize">
+<table class="table table-striped text-capitalize">
     <thead>
         <tr>
             <th scope="col">STT</th>
@@ -38,12 +32,6 @@
             <th scope="col">
                 Lớp
             </th>
-            @if (ViewBag.Stt == null)
-            {
-                <th scope="col">
-                    Phòng
-                </th>
-            }
             <th scope="col">Hành động</th>
         </tr>
     </thead>
@@ -69,16 +57,10 @@
                 <td>
                     @Html.DisplayFor(m => item.lop)
                 </td>
-                @if (ViewBag.Stt == null)
-                {
-                    <td>
-                        @item.PHONG.tenphong
-                    </td>
-                }
                 <td>
                     @if (ViewBag.Stt == true)
                     {
-                        <a e-id="@item.mahs" e-type="set" href="@Url.Action("XepPhong", new { id=item.mahs})" class="btn text-white" style="background-color: rgb(115, 144, 166) "><i class="fa-solid fa-person-shelter"></i> Xếp phòng</a>
+                        <a e-id="@item.mahs" e-type="set" href="@Url.Action("XepPhong", new { id=item.mahs})" class="btn bg-primary text-white"><i class="fa-solid fa-person-shelter"></i> Xếp phòng</a>
                         <i class="fa-brands fa-squarespace fs-5"></i>
                     }
                     <a e-id="@item.mahs" e-type="edit" class="btn bg-secondary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>

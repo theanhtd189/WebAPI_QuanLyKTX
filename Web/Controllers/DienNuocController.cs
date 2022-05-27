@@ -9,12 +9,89 @@ using System.Web;
 using System.Web.Mvc;
 using Web.Models;
 using Web.Middlewares;
+using System.Text;
+using OfficeOpenXml;
+using System.Xml.Serialization;
+using System.Xml;
+using System.IO;
 
 namespace Web.Controllers
 {
     public class DienNuocController : Controller
     {
         private Context db = new Context();
+
+        // xuất file
+        //public ActionResult Csv()
+        //{
+        //    var p_list = new Context().PHIEU_DIENNUOC.ToList();
+        //    var builder = new StringBuilder();
+        //    builder.AppendLine("Mã phiếu,Mã phòng,Ngày tạo phiếu,Số điện,Giá điện,Số nước,Giá nước,Tổng tiền");
+        //    foreach (var phieu in p_list)
+        //    {
+        //        builder.AppendLine($"{phieu.maphieu},{phieu.maphong},{phieu.ngaytaophieu},{phieu.sodien},{phieu.giadien},{phieu.sonuoc},{phieu.gianuoc},{phieu.tongtien}");
+        //    }
+
+        //    return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "users.csv");
+        //}
+
+        public ActionResult DownloadExcel()
+        {
+
+            // If you use EPPlus in a noncommercial context
+            // according to the Polyform Noncommercial license:
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                //Set some properties of the Excel document
+                excelPackage.Workbook.Properties.Author = "Qawithexperts";
+                excelPackage.Workbook.Properties.Title = "test Excel";
+                excelPackage.Workbook.Properties.Subject = "Write in Excel";
+                excelPackage.Workbook.Properties.Created = DateTime.Now;
+
+                //Create the WorkSheet
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+
+                var p_list = db.PHIEU_DIENNUOC.ToList();
+
+                ExcelPackage Ep = new ExcelPackage();
+                ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Report");
+                Sheet.Cells["A1"].Value = "Mã phiếu";
+                Sheet.Cells["B1"].Value = "Mã phòng";
+                Sheet.Cells["C1"].Value = "Ngày tạo phiếu";
+                Sheet.Cells["D1"].Value = "Số điện";
+                Sheet.Cells["E1"].Value = "Giá điện";
+                Sheet.Cells["C1"].Value = "Số nước";
+                Sheet.Cells["D1"].Value = "Giá nước";
+                Sheet.Cells["E1"].Value = "Tổng tiền";
+                int row = 2;
+                foreach (var item in p_list)
+                {
+
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.maphieu;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.maphong;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.ngaytaophieu;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.sodien;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.giadien;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.sonuoc;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.gianuoc;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.tongtien;
+                    row++;
+                }
+
+
+                Sheet.Cells["A:AZ"].AutoFitColumns();
+                Response.Clear();
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment: filename=" + "Report.xlsx");
+                Response.BinaryWrite(Ep.GetAsByteArray());
+                Response.End();
+
+                return View("XuatExcel");
+            }
+        }
+       
 
         // GET: DienNuoc
         [CheckUserSession]

@@ -7,9 +7,9 @@
 }
 
 
-<h2 class="display-6 lb-page">Danh sách hóa đơn điện nước </h2>
-<a class="btn mb-2 btn-outline-primary add-new" e-type="create" href="#"><i class="fa-solid fa-plus"></i> Thêm mới</a>
-<table class="table table-striped table-dark">
+<h2 class="display-6 lb-page">Danh sách phiếu điện nước </h2>
+<a class="btn mb-2 add-new" e-type="create" href="#" style="background-color: rgb(154, 192, 173)"><i class="fa-solid fa-plus"></i> Thêm mới</a>
+<table class="table table-striped">
     <thead>
         <tr>
             <th scope="col">STT</th>
@@ -26,7 +26,7 @@
                 Tổng tiền
             </th>
             <th scope="col">
-                Ngày tạo hóa đơn
+                Ngày tạo phiếu
             </th>
             <th scope="col">Hành động</th>
         </tr>
@@ -56,14 +56,18 @@
                  @item.ngaytaophieu.Value.ToString("dd/MM/yyyy")
             </td>
             <td>
-                <a e-id="@item.maphieu" e-type="detail" class="btn bg-primary text-white"><i class="fa-solid fa-calendar-week"></i> Chi tiết</a>
+                <a e-id="@item.maphieu" e-type="detail" class="btn text-white" style="background-color: rgb(115, 144, 166) "><i class="fa-solid fa-calendar-week"></i> Chi tiết</a>
                 <i class="fa-brands fa-squarespace fs-5"></i>
-                <a e-type="edit" e-id="@item.maphieu" class="btn bg-primary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
+                <a e-type="edit" e-id="@item.maphieu" class="btn bg-secondary text-white"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
                 <i class="fa-brands fa-squarespace fs-5"></i>
-                <a e-id="@item.maphieu" e-type="delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
+                <a e-id="@item.maphieu" e-type="delete" class="btn text-white" style="background-color: rgb(200, 103, 122)"><i class="fa-solid fa-trash-can"></i> Xóa</a>
             </td>
         </tr>
         }
     </tbody>
 </table>
+
+<div>
+    <a href="@Url.Action("DownloadExcel","DienNuoc")">Export to Excel</a>
+</div>
 

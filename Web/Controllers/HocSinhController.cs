@@ -16,6 +16,17 @@ namespace Web.Controllers
         private Context db = new Context();
 
 
+        public ActionResult theanh(string timkiem)
+        {
+            if (!String.IsNullOrEmpty(timkiem))
+            {
+                var ketqua = db.HOCSINH_NEW.Where(x => x.hoten.Contains(timkiem)).ToList();
+                return View("timkiem",ketqua);
+            }
+            else
+                return RedirectToAction("Index");
+        }
+
         /// <summary>
         /// Stt của học sinh: null(đã có phòng) - true(học sinh mới) - false(rời phòng)
         /// Mặc định show list học sinh đã có phòng

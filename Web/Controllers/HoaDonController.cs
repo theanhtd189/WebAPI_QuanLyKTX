@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -16,6 +17,65 @@ namespace Web.Controllers
     {
         private Context db = new Context();
 
+        public ActionResult DownloadExcel()
+        {
+
+            // If you use EPPlus in a noncommercial context
+            // according to the Polyform Noncommercial license:
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                //Set some properties of the Excel document
+                excelPackage.Workbook.Properties.Author = "Qawithexperts";
+                excelPackage.Workbook.Properties.Title = "test Excel";
+                excelPackage.Workbook.Properties.Subject = "Write in Excel";
+                excelPackage.Workbook.Properties.Created = DateTime.Now;
+
+                //Create the WorkSheet
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+
+                var p_list = db.HOADONs.ToList();
+
+                ExcelPackage Ep = new ExcelPackage();
+                ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Report");
+                Sheet.Cells["A1"].Value = "Mã hóa đơn";
+                Sheet.Cells["B1"].Value = "Mã phiếu điện nước";
+                Sheet.Cells["C1"].Value = "Ngày tạo hóa đơn";
+                Sheet.Cells["D1"].Value = "Tiền điện nước";
+                Sheet.Cells["E1"].Value = "Tiền phòng";
+                Sheet.Cells["C1"].Value = "Tổng tiền";
+                Sheet.Cells["D1"].Value = "Mã Phòng";
+                Sheet.Cells["E1"].Value = "Tên học sinh thanh toán hóa đơn";
+                Sheet.Cells["E1"].Value = "Tên nhân viên";
+                int row = 2;
+                foreach (var item in p_list)
+                {
+
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.mahd;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.maphieudiennuoc;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.ngaytao;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.tiendiennuoc;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.tienphong;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.tongtien;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.maphong;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.tenhs;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.tennv;
+                    row++;
+                }
+
+
+                Sheet.Cells["A:AZ"].AutoFitColumns();
+                Response.Clear();
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment: filename=" + "Report.xlsx");
+                Response.BinaryWrite(Ep.GetAsByteArray());
+                Response.End();
+
+                return View("XuatExcel");
+            }
+        }
+
         // GET: HoaDon
         [CheckUserSession]
         public ActionResult Index(int page = 1, int limit = 10)
@@ -28,7 +88,7 @@ namespace Web.Controllers
                 var _url = _host + _api;
                 var responseTask = client.GetAsync(_url);
                 responseTask.Wait();
-
+                //fetch
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
