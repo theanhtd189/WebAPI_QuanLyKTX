@@ -84,6 +84,12 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "matk,hoten,email,pass,cvu")] TAIKHOAN e)
         {
+            var exist = db.TAIKHOANs.FirstOrDefault(x=>x.email == e.email);
+            if (exist != null)
+            {
+                ViewBag.Msg = "Email đã tồn tại, vui lòng chọn email khác!";
+                return View();
+            }
             using (var client = new HttpClient())
             {
                 var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
@@ -142,6 +148,12 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "matk,hoten,email,pass,cvu")] TAIKHOAN e)
         {
+            var exist = db.TAIKHOANs.FirstOrDefault(x => x.email == e.email);
+            if (exist.matk != e.matk)
+            {
+                ViewBag.Msg = "Email đã tồn tại, vui lòng chọn email khác!";
+                return View();
+            }
             using (var client = new HttpClient())
             {
                 var _host = Request.Url.Scheme + "://" + Request.Url.Authority;
