@@ -7,15 +7,15 @@
 
 <h2 class="hi"><i class="fa-solid fa-house-chimney"></i> Thông tin </h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.tenphong, "Tên phòng",htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.tenphong, "Tên phòng", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.tenphong, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.tenphong, "", new { @class = "text-danger" })
@@ -23,15 +23,15 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.tsogiuong,"Số giường", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.tsogiuong, "Số giường", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.tsogiuong, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.tsogiuong, new { htmlAttributes = new { @class = "form-control", min = 0, max = 10 } })
                 @Html.ValidationMessageFor(model => model.tsogiuong, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.tang,"Số tầng", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.tang, "Số tầng", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.tang, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.tang, "", new { @class = "text-danger" })
@@ -39,7 +39,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.tinhtrang,"Tình trạng", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.tinhtrang, "Tình trạng", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
                     <select class="list-box tri-state" id="tinhtrang" name="tinhtrang">
@@ -61,3 +61,15 @@
 <div>
     <i class="fa-regular fa-square-caret-left"></i> @Html.ActionLink("Quay lại", "Index")
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#tsogiuong").change(function () {
+            if (Number($(this).val()) > 10) {
+                alert("Số giường không được quá 10 giường!");
+                $(this).val('1')
+            }
+        })
+    })
+</script>

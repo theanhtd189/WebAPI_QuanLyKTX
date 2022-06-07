@@ -39,7 +39,7 @@
         left: 50%;
         display: inline-block;
         width: 275px;
-        height: 490px;
+       @* height: 490px;*@
         border-radius: 3px;
         transform: translate(-50%, -50%);
         overflow: hidden;
@@ -357,7 +357,7 @@
 
         .center .login .login-button {
             width: calc(100% - 40px);
-            margin: 20px 20px 0;
+            margin: 0px 20px 0;
             outline: none;
             background-color: #243946;
             color: #fff;
@@ -436,6 +436,19 @@
         transition: .5s;
         height: 40px !important;
     }
+    #tab-login {
+        padding:15px;
+    }
+    #tab-signup {
+        display:none;
+        padding:15px;
+    }
+    #btn-login {
+        background: #1382c7;
+    }
+    .msg-stt.ok {
+        color:blue;
+    }
 </style>
 
 <div class="center">
@@ -498,35 +511,42 @@
             </div>
         </div>
     </div>
-    <form class="login" action="/Login" method="post">
-        @{
-            if (ViewBag.Msg != null)
-            {
-                <p class="msg-stt">@ViewBag.Msg</p>
-            }
-        }
-        <label>
-            <div class="fa fa-phone"></div>
-            <input class="username" type="text" name="email" autocomplete="off" placeholder="Email" required />
-        </label>
-        <label>
-            <div class="fa fa-commenting"></div>
-            <input class="password" type="password" name="password" autocomplete="off" placeholder="Password" required />
-        </label>
-        <button class="login-button">LOGIN</button>
+    <form class="login" autocomplete="off" novalidate>
+         <p class="msg-stt"></p>
+        <div id="tab-login">
+            <input autocomplete="off" name="hidden" type="text" style="display:none;">
+            <label>
+                <div class="fa fa-phone"></div>
+                <input class="username" type="text" name="email" autocomplete="off" id="e1" placeholder="Email" required />
+            </label>
+            <label>
+                <div class="fa fa-commenting"></div>
+                <input class="password" type="password" name="password" autocomplete="off" id="ps1" placeholder="Password" required />
+            </label>
+        </div>
+        <div id="tab-signup">
+            <input autocomplete="off" name="hidden" type="text" style="display:none;">
+            <label>
+                <div class="fa fa-phone"></div>
+                <input class="username" type="text" name="hoten" autocomplete="off" placeholder="Họ và tên" required id="hoten" />
+            </label>
+            <label>
+                <div class="fa fa-phone"></div>
+                <input class="username" type="text" name="email" autocomplete="off" placeholder="Email" required id="email" />
+            </label>
+            <label>
+                <div class="fa fa-commenting"></div>
+                <input class="password" type="password" name="pass" autocomplete="off" placeholder="Password" required id="p1"/>
+            </label>
+            <label>
+                <div class="fa fa-commenting"></div>
+                <input class="password" type="password" name="pass2" autocomplete="off" placeholder="Repeat Password" required id="p2" />
+            </label>
+        </div>
+        <button class="login-button" type="submit" id="btn-login">Đăng Nhập</button>
+        <p style="text-align:center">Hoặc</p>
+        <button class="login-button" id="btn-signup">Đăng Ký Tài Khoản Mới</button>
     </form>
-    <div class="social-buttons">
-        <div class="social">
-            <div class="fa fa-wechat"></div>
-        </div>
-        <div class="social">
-            <div class="fa fa-weibo"></div>
-        </div>
-        <div class="social">
-            <div class="fa fa-paw"></div>
-        </div>
-    </div>
-    <div class="footer">2022</div>
 
 
     <script>
@@ -580,13 +600,100 @@
             //face.style.setProperty('--rotate-head', `${-length}deg`);
         }, 100));*@
 
+    </script>
+    <script>
         $(document).ready(function () {
-            var pass = $(".password")
+            var is_signup = false;
 
-            console.log(pass)
-            pass.blur(function () {
-                console.log('a')
+            $("#btn-signup").click(function (e) {
+                e.preventDefault();
+                if (!is_signup) {
+                    $("#tab-signup").show(1000);
+                    $("#tab-login").hide();
+                    is_signup = true;
+                }
+                else {
+                    var hoten = $("#hoten").val();
+                    var e = $("#email").val();
+                    var p1 = $("#p1").val();
+                    var p2 = $("#p2").val();
+
+                    if (e.trim() == "" || hoten.trim() == "" || p1.trim() == "" || p2.trim() == "") {
+                        $(".msg-stt").text("Vui lòng nhập đủ thông tin!");
+                    }
+                    else
+                        if (p1 != p2) {
+                            $(".msg-stt").text("Mật khẩu bạn nhập không khớp!");
+                        }
+                    else {
+                        $.ajax({
+                            url: '@Url.Action("","SignUp")',
+                            type: 'post',
+                            dataType: 'json',
+                            data: { hoten: hoten, email: e, pass: p1 },
+                             success: function (res) {
+                                 console.log(res)
+                                 if (res.stt_code == 200) {
+                                     $(".msg-stt")
+                                         .addClass("ok")
+                                         .text(res.messeage)
+                                 }
+                                 else {
+                                     $(".msg-stt")
+                                         .text(res.messeage)
+                                     var rel = function () {
+                                         location.reload();
+                                     }
+
+                                     setTimeout(rel,1000)
+                                 }
+                                }
+                                , error: function (error) {
+                                    $(".msg-stt").text("Lỗi truy xuất dữ liệu !", error);
+                                }
+                        })
+                    }
+                }
+
+            })
+
+            $("#btn-login").click(function (e) {
+                e.preventDefault();
+                if (is_signup) {
+                    $("#tab-signup").hide(1000);
+                    $("#tab-login").show(500);
+                    is_signup = false;
+                }
+                else {
+                    var u = $("#e1").val();
+                    var p = $("#ps1").val();
+                    if (u.trim() == ""){
+                        $(".msg-stt").text("Vui lòng nhập email !");
+                    }
+                    else
+                        if (p.trim() == "") {
+                            $(".msg-stt").text("Vui lòng nhập password !");
+                        }
+                    else {
+                            $(".msg-stt").text('')
+                            $.ajax({
+                                url: '@Url.Action("","Login")',
+                                type: 'post',
+                                data: { email: u, password: p },
+                                dataType: 'json',
+                                success: function (res) {
+                                    console.log(res)
+                                    $(".msg-stt").text(res.messeage)
+                                    if (res.stt_code == 200) {
+                                        location.href = "@Url.Action("","Home")";
+                                    }
+                                }
+                                , error: function (error) {
+                                    $(".msg-stt").text("Lỗi truy xuất dữ liệu !", error);
+                                }
+                            })
+                    }
+                }
             })
         })
-
     </script>

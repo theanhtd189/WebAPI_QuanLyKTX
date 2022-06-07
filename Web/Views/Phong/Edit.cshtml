@@ -27,7 +27,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.tsogiuong,"Số giường", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.tsogiuong, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.tsogiuong, new { htmlAttributes = new { @class = "form-control", min = 0, max = 10 } })
                 @Html.ValidationMessageFor(model => model.tsogiuong, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -63,3 +63,14 @@
 <div>
     <i class="fa-regular fa-square-caret-left"></i> @Html.ActionLink("Quay lại", "Index")
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#tsogiuong").change(function () {
+            if (Number($(this).val()) > 10) {
+                alert("Số giường không được quá 10 giường!");
+                $(this).val('1')
+            }
+        })
+    })
+</script>

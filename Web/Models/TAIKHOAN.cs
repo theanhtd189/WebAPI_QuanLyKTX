@@ -22,8 +22,7 @@ namespace Web.Models
         [Required]
         [StringLength(100)]
         public string pass { get; set; }
-
-        [Required]
+       
         [StringLength(20)]
         public string cvu { get; set; }
     }

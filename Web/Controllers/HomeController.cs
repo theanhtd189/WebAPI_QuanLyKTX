@@ -42,71 +42,115 @@ namespace Web.Controllers
             }
             
         }
-        [HttpPost,Route("Login")]
-        public ActionResult Login(string email, string password)
+        [HttpPost, Route("Login")]
+        public JsonResult Login(string email, string password)
         {
-            try
-            {
-                if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
-                {
-                    using (HttpClient client=new HttpClient())
-                    {
-                        var host = Request.Url.Scheme +"://"+ Request.Url.Authority ;
-                        var api = host + Url.Action("GetAccount","TaiKhoan",new { httproute= "DefaultApi", email=email, password=password });
-                        var task = client.GetAsync(api);
-                        task.Wait();
 
-                        var result = task.Result;
-                        if (result.IsSuccessStatusCode)
-                        {
-                            var content = result.Content.ReadAsAsync<TAIKHOAN>();
-                            content.Wait();
-                            var data = content.Result;
-                            if (data != null)
-                            {
-                                Session["user_id"] = data.matk;
-                                return RedirectToAction("Index");
-                            }
-                            else
-                            {
-                                ViewBag.Msg = "Tài khoản hoặc mật khẩu không đúng!";
-                            }         
-                        }
-                        else
-                        {
-                            ViewBag.Msg = "Tài khoản hoặc mật khẩu không đúng!";
-                            
-                        }
-                        return View("LogIn");
-                    }
+            var return_id = 0;
+            var stt = "error";
+            var stt_code = 400;
+            var messeage = "Tên tài khoản hoặc mật khẩu không đúng!";
+
+
+            if (string.IsNullOrEmpty(email))
+            {
+                messeage = "Tên tài khoản không được để trống! ";
+            }      
+            else
+            if (string.IsNullOrEmpty(password))
+            {
+                messeage = "Mật khẩu không được để trống! ";
+            }
+            else
+            {
+                var u = db.TAIKHOANs.FirstOrDefault(x => x.email == email && x.pass == password);
+                if (u != null)
+                {
+                    stt = "OK";
+                    stt_code = 200;
+                    return_id = u.matk;
+                    messeage = "Đăng nhập thành công! Đang chuyển hướng!";
+                    Session["user_id"] = u.matk;
                 }
                 else
                 {
-                    ViewBag.Msg = "Tham số không tồn tại!";
-                    return View("~/View/Shared/Error.cshtml");
+                    stt_code = 404;
                 }    
-                
-            }
-            catch (Exception x)
-            {
-                ViewBag.Msg = x.Message;
-                return View("~/View/Shared/Error.cshtml");
             }
 
+            var _j = new
+            {
+                return_id = return_id,
+                stt = stt,
+                stt_code = stt_code,
+                messeage = messeage
+            };
+            return Json(_j);
         }
 
-        [HttpGet,Route("LogOut")]
-        public ActionResult Logout() {
-            if (Session["user_id"]!=null)
+        [HttpPost,Route("SignUp")]
+        public JsonResult DangKy(TAIKHOAN e)
+        {
+
+            var return_id = 0;
+            var stt = "error";
+            var stt_code = 400;
+            var messeage = "!";
+
+
+            if (string.IsNullOrEmpty(e.email))
             {
-                Session.Clear();               
+                messeage = "Email tài khoản không được để trống! ";
             }
-            return RedirectToAction("Index");
+            else
+            if (string.IsNullOrEmpty(e.pass))
+            {
+                messeage = "Mật khẩu không được để trống! ";
+            }
+            else
+            {
+                var u = db.TAIKHOANs.FirstOrDefault(x => x.email == e.email);
+                if (u == null)
+                {
+                    try
+                    {
+                        e.cvu = "ADMIN";
+                        db.TAIKHOANs.Add(e);
+                        db.SaveChanges();
+                        stt = "OK";
+                        stt_code = 200;
+                        return_id = e.matk;
+                        messeage = "Tạo tài khoản thành công! Vui lòng đăng nhập!";
+                    }
+                    catch(Exception x)
+                    {
+                        messeage = x.Message;
+                    }
+                    
+
+                    
+                }
+                else
+                {
+                    stt_code = 202;
+                    messeage = "Email đã tồn tại, vui lòng chọn email khác!";
+                }
+            }
+
+            var _j = new
+            {
+                return_id = return_id,
+                stt = stt,
+                stt_code = stt_code,
+                messeage = messeage
+            };
+            return Json(_j);
         }
 
-        [Route("SignUp")]
-        public ActionResult Signup() {
-            return View();
+        [HttpGet, Route("LogOut")]
+        public ActionResult LogOut() {
+            Session.Clear();
+            return RedirectToAction(nameof(Login));
         }
 
         [CheckUserSession]
